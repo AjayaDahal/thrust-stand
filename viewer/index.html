@@ -1,0 +1,1006 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Thrust stand — 3D viewer</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #eef1f4; font: 13px system-ui, sans-serif; }
+  canvas { display: block; }
+  #ui { position: absolute; top: 8px; left: 8px; z-index: 2; background: #ffffffeb; border-radius: 8px; padding: 8px 10px;
+        box-shadow: 0 1px 4px #0003; max-width: 380px; max-height: calc(100% - 56px); overflow-y: auto; }
+  #ui h1 { font-size: 14px; margin: 0 0 6px; cursor: pointer; user-select: none; }
+  #ui h1::after { content: " \25BE"; color: #888; }
+  #ui.min h1 { margin: 0; }
+  #ui.min h1::after { content: " \25B8  (show controls)"; font-weight: normal; font-size: 12px; }
+  #ui.min .row { display: none; }
+  #ui button { margin: 2px 2px 2px 0; padding: 3px 7px; font-size: 12px; cursor: pointer; }
+  #ui button.big { font-weight: 600; }
+  #ui label { display: inline-block; margin: 3px 8px 3px 0; }
+  #ui select { font-size: 12px; max-width: 250px; }
+  #ui .row { margin: 4px 0; }
+  #ui .hd { font-weight: 600; margin-top: 8px; padding-top: 6px; border-top: 1px solid #dde2e8; }
+  #ui .note { color: #666; font-size: 12px; }
+  #ui input[type=range] { vertical-align: middle; width: 150px; }
+  #readout { position: absolute; top: 8px; right: 8px; z-index: 2; background: #1f2630e6; color: #fff; border-radius: 8px;
+             padding: 7px 11px; font-size: 12.5px; white-space: pre; display: none; line-height: 1.45; }
+  #readout b { color: #ffd166; }
+  #status { position: absolute; bottom: 8px; left: 8px; color: #555; z-index: 2; }
+  #legend { position: absolute; bottom: 8px; right: 8px; background: #ffffffe6; border-radius: 8px; padding: 6px 10px; z-index: 2; }
+  .sw { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -2px; margin: 0 4px 0 10px; }
+  #overlay { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 1; }
+  #tip { position: absolute; pointer-events: none; background: #1f2630ee; color: #fff; padding: 4px 8px; border-radius: 4px;
+         font-size: 12px; display: none; white-space: pre; z-index: 3; }
+</style>
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="ui">
+  <h1>Thrust stand v1</h1>
+  <div class="row">Design:
+    <label><input type="radio" name="design" value="v1" checked> v1 (this design)</label>
+    <label><input type="radio" name="design" value="v0"> v0 draft as audited (clashes red)</label>
+  </div>
+  <div class="row stand">
+    <button data-view="iso_front">3/4 front</button><button data-view="iso_rear">3/4 rear</button>
+    <button data-view="side">Side</button><button data-view="front">Front (prop)</button><button data-view="top">Top</button><br>
+    <span class="v1">Close-up: <button data-view="pivot">pivot</button><button data-view="motor">motor + fork</button>
+      <button data-view="crank">bell crank</button><button data-view="cell">load cell</button>
+      <button data-view="cal">calibration</button></span>
+    <span class="v0">Close-up: <button data-view="v0_pivot">pivot</button><button data-view="v0_motor">motor clamp</button>
+      <button data-view="v0_brace">brace foot</button></span>
+  </div>
+  <div class="row stand v1">Scale:
+    <label><input type="radio" name="scale" value="bench" checked> 0.1 g pocket scale + bell crank</label>
+    <label><input type="radio" name="scale" value="cell"> 5 kg load cell</label><br>
+    <label><input type="checkbox" id="cal"> calibration pulley</label>
+    <label><input type="checkbox" id="guy"> guy cord (optional)</label>
+  </div>
+  <div class="row stand v1">Prop: <select id="prop"><option value="7" selected>7 in (the VTOL's)</option>
+    <option value="8">8 in</option><option value="10">10 in</option></select>
+    <label><input type="checkbox" id="bought" checked> bought parts</label>
+    <label><input type="checkbox" id="bolts" checked> bolts</label>
+    <label><input type="checkbox" id="cables" checked> cables</label>
+  </div>
+  <div class="row stand">Colours:
+    <label><input type="radio" name="mode" value="printed" checked> as printed</label>
+    <label><input type="radio" name="mode" value="parts"> by part</label>
+    <label><input type="checkbox" id="xray"> x-ray</label>
+    <label><input type="checkbox" id="labels" checked> labels</label>
+  </div>
+  <div class="row hd stand">Forces</div>
+  <div class="row stand">Thrust <input type="range" id="thrust" min="0" max="2000" step="10" value="0">
+    <span id="thrustv">0 g</span></div>
+  <div class="row stand v1"><button id="swing">Link off: let the arm swing to its stop</button></div>
+  <div class="row hd stand v1">Burst view and cuts</div>
+  <div class="row stand v1"><button id="burst" class="big">Burst ▸</button>
+    <input type="range" id="explode" min="0" max="100" value="0"> <span id="explodev">0 %</span></div>
+  <div class="row stand">Cut: <select id="section">
+      <option value="none">no cut</option>
+      <option value="y0">on the centre plane (y = 0): arm, link, crank</option>
+      <option value="post">through the post (y = -70)</option></select></div>
+  <div class="row hd">Printable parts</div>
+  <div class="row"><button id="gallery" class="big">Show the print files</button>
+    <button id="back" class="big" style="display:none">Back to the stand</button>
+    <select id="gfilter">
+      <option value="all">all print files</option>
+      <option value="core">every build</option>
+      <option value="bench">pocket-scale option</option>
+      <option value="cell">load-cell option</option>
+      <option value="cal">calibration rig</option>
+      <option value="guy">optional guy anchor</option>
+    </select></div>
+  <div class="row note">Hover a part for its name; double-click to zoom to it.</div>
+</div>
+<div id="readout"></div>
+<canvas id="overlay"></canvas>
+<div id="tip"></div>
+<div id="legend"></div>
+<div id="status">loading…</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import * as BGU from 'three/addons/utils/BufferGeometryUtils.js';
+
+const params = new URLSearchParams(location.search);
+const capture = params.has('capture');
+const $ = id => document.getElementById(id);
+const status = $('status');
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(capture ? 1 : window.devicePixelRatio);
+renderer.localClippingEnabled = true;
+document.body.appendChild(renderer.domElement);
+const overlay = $('overlay'), octx = overlay.getContext('2d');
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xeef1f4);
+const camera = new THREE.PerspectiveCamera(30, 1, 5, 20000);
+camera.up.set(0, 0, 1);
+let controls = new OrbitControls(camera, renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8f99, 1.1));
+const key = new THREE.DirectionalLight(0xffffff, 2.0);
+const fill = new THREE.DirectionalLight(0xffffff, 0.6);
+key.position.set(700, 500, 1100); fill.position.set(-800, 600, 400);
+scene.add(key, key.target, fill, fill.target);
+const grid = new THREE.GridHelper(1600, 32, 0xb9c0c8, 0xd5dae0);
+grid.rotation.x = Math.PI / 2; grid.position.set(-130, 0, -19); scene.add(grid);
+let gridOn = true;
+
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+const V3 = a => new THREE.Vector3(a[0], a[1], a[2]);
+const deg = THREE.MathUtils.degToRad;
+const COL = { petg: 0x2f6db5, tube: 0xf3f2ec, steel: 0xa3abb5, zinc: 0x7f8893, board: 0xc9a46a, motor: 0x3b3b3b,
+              bell: 0xb03030, prop: 0x8a939d, v0: 0x9db3c9, clash: 0xe0312b, paint: 0xd8dbdf, screw: 0x2c2f33 };
+
+// One clipping plane for the section cuts; back faces drawn darker, so a cut shell reads as its inside.
+const clipPlane = new THREE.Plane(V(0, 1, 0), 0);
+const clipMats = new Set();
+let sectionOn = false;
+const tintBack = s => {
+  s.fragmentShader = s.fragmentShader.replace('#include <color_fragment>',
+    '#include <color_fragment>\n\tif ( ! gl_FrontFacing ) diffuseColor.rgb *= 0.55;');
+};
+function prep(m) {
+  m.side = THREE.DoubleSide;
+  m.onBeforeCompile = tintBack;
+  clipMats.add(m);
+  m.clippingPlanes = sectionOn ? [clipPlane] : null;
+  return m;
+}
+const std = o => prep(new THREE.MeshStandardMaterial(o));
+const mats = {
+  petg: std({ color: COL.petg, roughness: 0.45 }),
+  tube: std({ color: COL.tube, roughness: 0.35 }),
+  steel: std({ color: COL.steel, roughness: 0.3, metalness: 0.7 }),
+  zinc: std({ color: COL.zinc, roughness: 0.4, metalness: 0.6 }),
+  board: std({ color: COL.board, roughness: 0.85 }),
+  motor: std({ color: COL.motor, roughness: 0.4, metalness: 0.6 }),
+  bell: std({ color: COL.bell, roughness: 0.4, metalness: 0.5 }),
+  prop: std({ color: COL.prop, roughness: 0.6, transparent: true, opacity: 0.28, depthWrite: false }),
+  screw: std({ color: COL.screw, roughness: 0.5, metalness: 0.4 }),
+  v0: std({ color: COL.v0, roughness: 0.6, transparent: true, opacity: 0.5, depthWrite: false }),
+  v0tube: std({ color: COL.tube, roughness: 0.4, transparent: true, opacity: 0.45, depthWrite: false }),
+  clash: std({ color: COL.clash, roughness: 0.5, emissive: 0x7a0d08, emissiveIntensity: 0.6 }),
+};
+const edgeMat = new THREE.LineBasicMaterial({ color: 0x1b1f24, transparent: true, opacity: 0.45 });
+clipMats.add(edgeMat);
+
+const man = await (await fetch('manifest.json')).json();
+const fileOf = Object.fromEntries(man.files.map(f => [f.name, f]));
+const loader = new STLLoader();
+async function loadSTL(url, tries = 4) {
+  for (let k = 1; ; k++) {
+    try { return await loader.loadAsync(url); }
+    catch (e) { if (k >= tries) throw e; await new Promise(r => setTimeout(r, 400 * k)); }
+  }
+}
+const geos = new Map();
+let nLoaded = 0;
+const urls = [...new Set([...man.files.map(f => f.url), ...man.v0.parts.map(p => p.url), ...man.v0.clashes.map(c => c.url)])];
+await Promise.all(urls.map(async u => {
+  geos.set(u, BGU.toCreasedNormals(await loadSTL(u), deg(30)));
+  status.textContent = `loading ${++nLoaded}/${urls.length}`;
+}));
+
+// ---- scene graph: v1 under root (the pendulum under pivotG, which turns about the axle), v0 under v0root
+const root = new THREE.Group(); scene.add(root);
+const v0root = new THREE.Group(); v0root.visible = false; scene.add(v0root);
+const P = man.physics;
+const pivotG = new THREE.Group(); pivotG.position.set(...P.pivot); root.add(pivotG);
+const pivotInner = new THREE.Group(); pivotInner.position.set(-P.pivot[0], -P.pivot[1], -P.pivot[2]); pivotG.add(pivotInner);
+const pend = new Set(man.pendulum);
+const items = [];
+function addItem(name, obj, o) {
+  const g = new THREE.Group(); g.add(obj);
+  (pend.has(name) ? pivotInner : root).add(g);
+  const it = { name, group: g, option: o.option || 'core', kind: o.kind, label: o.label || null,
+               burst: V3(o.burst || [0, 0, 0]), info: o.info || {} };
+  g.traverse(c => { c.userData.item = it; });
+  items.push(it);
+  return it;
+}
+function cylBetween(a, b, r, mat, seg = 32, rTop = r) {
+  const len = a.distanceTo(b);
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(rTop, r, len, seg), mat);
+  m.position.copy(a).add(b).multiplyScalar(0.5);
+  m.quaternion.setFromUnitVectors(V(0, 1, 0), b.clone().sub(a).normalize());
+  return m;
+}
+
+// printed parts: print-orientation STL, placed by its matrix
+man.placements.forEach((p, i) => {
+  const m = new THREE.Mesh(geos.get(fileOf[p.file].url), mats.petg);
+  m.matrixAutoUpdate = false; m.matrix.fromArray(p.matrix);
+  addItem(p.name, m, { option: p.option, kind: 'part', label: p.label, burst: p.burst,
+                       info: { ...p, hue: (i * 0.618) % 1 } });
+});
+// tubes
+for (const t of man.tubes) addItem(t.name, cylBetween(V3(t.a), V3(t.b), t.od / 2, mats.tube, 40),
+                                   { option: t.option, kind: 'tube', label: t.label, burst: t.burst, info: t });
+// bolts: head, shank, washers and nut; the nut backs off the other way in the burst
+const WOD = { M3: 7, M4: 9, M5: 10, M8: 16 };
+for (const b of man.bolts) {
+  const p0 = V3(b.p0), u = V3(b.u), at = k => p0.clone().addScaledVector(u, k);
+  const [hd, hh] = b.head, [wh, wn] = b.washers;
+  const bolt = new THREE.Group(), nut = new THREE.Group();
+  bolt.add(cylBetween(p0, at(b.length), b.d / 2 * 0.95, mats.steel, 16));
+  if (b.csk) bolt.add(cylBetween(p0, at(hh), hd / 2, mats.steel, 24, b.d / 2));
+  else bolt.add(cylBetween(at(-hh), p0, hd / 2, mats.steel, 24));
+  if (wh) bolt.add(cylBetween(p0, at(wh), WOD[b.size] / 2, mats.zinc, 24));
+  if (b.nut) {
+    const a0 = wh + b.stack, [af, t] = b.nut_dims;
+    if (wn) nut.add(cylBetween(at(a0), at(a0 + wn), WOD[b.size] / 2, mats.zinc, 24));
+    nut.add(cylBetween(at(a0 + wn), at(a0 + wn + t), af / Math.sqrt(3), mats.zinc, 6));
+  }
+  const it = addItem(b.name, bolt, { option: b.option, kind: 'bolt', burst: b.burst, info: b });
+  if (nut.children.length) {
+    const ng = new THREE.Group(); ng.add(nut); it.group.parent.add(ng);
+    const nit = { name: b.name + '_nut', group: ng, option: b.option, kind: 'bolt', label: null, burst: V3(b.nut_burst), info: b };
+    ng.traverse(c => { c.userData.item = nit; }); items.push(nit);
+  }
+}
+// board screws: heads on the feet
+const footOf = { core: 'post_foot', bench: 'crank_base', cell: 'cell_mast', cal: 'cal_mast', guy: 'guy_anchor' };
+const burstOf = Object.fromEntries(man.placements.map(p => [p.name, p.burst]));
+for (const s of man.board_screws) {
+  const a = V3(s.at);
+  addItem('board_screw', cylBetween(a, a.clone().add(V(0, 0, 3.2)), 4.6, mats.screw, 16),
+          { option: s.option, kind: 'bolt', burst: burstOf[s.part] || burstOf[footOf[s.option]],
+            info: { role: '#10 x 1 in wood screw (or 4.5-5 x 25 mm)' } });
+}
+// bought parts
+const propDisc = new THREE.Mesh(new THREE.CircleGeometry(1, 72), mats.prop);
+for (const e of man.bought) {
+  let obj;
+  if (e.kind === 'motor') {
+    obj = new THREE.Group();
+    const b = V3(e.base), x = k => b.clone().add(V(k, 0, 0));
+    const [rs, hs] = e.stator, [rb, hb] = e.bell;
+    obj.add(cylBetween(x(0), x(hs), rs, mats.motor, 40), cylBetween(x(hs), x(hs + hb), rb, mats.bell, 48),
+            cylBetween(x(hs + hb), x(e.prop_at + 6), e.shaft, mats.steel, 16),
+            cylBetween(x(e.prop_at - 4), x(e.prop_at + 4), 6, mats.motor, 24));
+    propDisc.position.copy(x(e.prop_at)); propDisc.rotation.y = Math.PI / 2;
+    obj.add(propDisc);
+  } else if (e.kind === 'box') {
+    const g = new THREE.BoxGeometry(e.size[0] - 0.4, e.size[1] - 0.4, e.size[2] - 0.4);
+    obj = new THREE.Mesh(g, std({ color: new THREE.Color(e.color), roughness: 0.55, metalness: 0.05 }));
+    obj.position.set(...e.pos);
+    obj.add(new THREE.LineSegments(new THREE.EdgesGeometry(g, 25), edgeMat));
+  } else {
+    const c = V3(e.pos), ax = V3(e.axis);
+    obj = cylBetween(c.clone().addScaledVector(ax, -e.h / 2), c.clone().addScaledVector(ax, e.h / 2), e.r,
+                     std({ color: new THREE.Color(e.color), roughness: 0.35, metalness: 0.6 }), 32);
+  }
+  addItem(e.name, obj, { option: e.option, kind: 'bought', label: e.label_short, burst: e.burst, info: e });
+}
+// cords and cables
+for (const l of man.lines) {
+  const curve = new THREE.CatmullRomCurve3(l.pts.map(V3), false, 'centripetal');
+  const m = new THREE.Mesh(new THREE.TubeGeometry(curve, Math.max(24, l.pts.length * 20), l.d / 2, 8, false),
+                           std({ color: new THREE.Color(l.color), roughness: 0.6 }));
+  addItem(l.name, m, { option: l.option, kind: 'line', burst: l.burst, info: l });
+}
+// board
+const bd = man.board;
+const board = new THREE.Mesh(new THREE.BoxGeometry(bd.x1 - bd.x0, bd.y1 - bd.y0, bd.t), mats.board);
+board.position.set((bd.x0 + bd.x1) / 2, (bd.y0 + bd.y1) / 2, -bd.t / 2);
+addItem('board', board, { kind: 'board', info: { role: `board ${bd.x1 - bd.x0} x ${bd.y1 - bd.y0} x ${bd.t} mm, plywood or MDF` } });
+
+// v0 as audited: its parts where its render put them, its tubes (post and arm on one axis), its clashes in red
+const v0items = [];
+for (const p of man.v0.parts) {
+  const m = new THREE.Mesh(geos.get(p.url), mats.v0); m.position.set(...p.pos);
+  m.userData.item = { kind: 'v0part', name: p.name, info: p }; v0root.add(m); v0items.push(m);
+}
+for (const t of man.v0.tubes) {
+  const m = cylBetween(V3(t.a), V3(t.b), t.od / 2, mats.v0tube, 40);
+  m.userData.item = { kind: 'v0tube', name: t.name, info: t }; v0root.add(m); v0items.push(m);
+}
+{
+  const g = new THREE.Group(), x = k => V(34 + k, 0, 220);
+  g.add(cylBetween(x(0), x(6), 14, mats.v0, 40), cylBetween(x(6), x(30), 17, mats.v0, 40));
+  g.traverse(c => { c.userData.item = { kind: 'v0tube', name: 'v0 motor', info: { role: 'motor (2807) on the v0 plate' } }; });
+  v0root.add(g);
+}
+const clashMeshes = [];
+for (const c of man.v0.clashes) {
+  const m = new THREE.Mesh(geos.get(c.url), mats.clash);
+  m.userData.item = { kind: 'clash', name: c.key, info: c, label: c.label };
+  v0root.add(m); clashMeshes.push(m);
+}
+
+// ---- forces: thrust at the prop, the link's pull at the pin, the crank's press on the anvil -------
+const arrows = new THREE.Group(); scene.add(arrows);
+const arT = new THREE.ArrowHelper(V(1, 0, 0), V3(P.prop), 1, 0xd62828, 30, 18);
+const arF = new THREE.ArrowHelper(V(-1, 0, 0), V3(P.pin), 1, 0x14853f, 30, 18);
+const arN = new THREE.ArrowHelper(V(0, 0, -1), V3(P.crank.nose), 1, 0x1f6fd1, 30, 18);
+const ARROW_DIR = new Map([[arT, V(1, 0, 0)], [arF, V(-1, 0, 0)], [arN, V(0, 0, -1)]]);
+arrows.add(arT, arF, arN);
+const MM_PER_G = 0.12;
+const V0 = man.v0.numbers;
+
+// ---- state, visibility, appearance ------------------------------------------------------------
+const S = { design: 'v1', scale: 'bench', cal: false, guy: false, bought: true, bolts: true, cables: true,
+            labels: true, xray: false, mode: 'printed', prop: 7, thrust: 0, swing: 0, swingTo: 0, b: 0, bTo: 0 };
+let galleryOn = false;
+const optionOn = o => o === 'core' || (o === 'bench' && S.scale === 'bench') || (o === 'cell' && S.scale === 'cell')
+  || (o === 'cal' && S.cal) || (o === 'guy' && S.guy);
+function applyVisibility() {
+  root.visible = S.design === 'v1' && !galleryOn;
+  v0root.visible = S.design === 'v0' && !galleryOn;
+  for (const it of items) {
+    let on = optionOn(it.option);
+    if (it.kind === 'bolt') on &&= S.bolts;
+    if (it.kind === 'bought') on &&= S.bought;
+    if (it.kind === 'line') on &&= S.cables && S.b < 0.01 && S.swing < 0.01;
+    it.group.visible = on;
+  }
+  const r = S.prop * 25.4 / 2;
+  propDisc.scale.set(r, r, 1);
+  document.querySelectorAll('#ui .v1').forEach(el => el.style.display = S.design === 'v1' ? '' : 'none');
+  document.querySelectorAll('#ui .v0').forEach(el => el.style.display = S.design === 'v0' ? '' : 'none');
+  updateForces(); updateLegend();
+}
+const partMats = new Map();
+const xrayTube = prep(mats.tube.clone()); xrayTube.transparent = true; xrayTube.opacity = 0.3; xrayTube.depthWrite = false;
+function applyLook() {
+  for (const it of items) {
+    if (it.kind === 'tube') { it.group.traverse(c => { if (c.isMesh) c.material = S.xray ? xrayTube : mats.tube; }); continue; }
+    if (it.kind !== 'part') continue;
+    let mat = mats.petg;
+    if (S.mode === 'parts') {
+      if (!partMats.has(it.name)) partMats.set(it.name, std({ color: new THREE.Color().setHSL(it.info.hue, 0.55, 0.6), roughness: 0.6 }));
+      mat = partMats.get(it.name);
+    }
+    if (S.xray) {
+      const k = 'x_' + mat.uuid;
+      if (!partMats.has(k)) { const c = prep(mat.clone()); c.transparent = true; c.opacity = 0.18; c.depthWrite = false; partMats.set(k, c); }
+      mat = partMats.get(k);
+    }
+    it.group.traverse(c => { if (c.isMesh) c.material = mat; });
+  }
+}
+function updateForces() {
+  const T = S.thrust, v0 = S.design === 'v0';
+  arrows.visible = T > 0 && !galleryOn && S.b < 0.01 && S.swing < 0.01;
+  const pin = v0 ? V(-42, 30, 224) : V3(P.pin).add(V(0, 0, 32)), prop = v0 ? V(76, 0, 220) : V3(P.prop);
+  const ratio = v0 ? V0.ratio : P.ratio;
+  const len = Math.max(1, T * MM_PER_G);
+  arT.userData.len = len; arF.userData.len = len * ratio;
+  arT.position.copy(prop); arT.setLength(len, Math.min(30, len * 0.4), Math.min(18, len * 0.25));
+  arF.position.copy(pin); arF.setLength(len * ratio, Math.min(30, len * 0.4), Math.min(18, len * 0.25));
+  arN.visible = !v0 && S.scale === 'bench';
+  arN.userData.len = arN.visible ? len : 0;
+  arN.position.copy(V3(P.crank.nose)).add(V(0, 26, len)); arN.setLength(len, Math.min(30, len * 0.4), Math.min(18, len * 0.25));
+  const ro = $('readout');
+  ro.style.display = T > 0 && !galleryOn ? 'block' : 'none';
+  ro.innerHTML = readoutText().replace(/\*(.+?)\*/g, '<b>$1</b>');
+}
+function readoutText() {
+  const T = S.thrust;
+  if (S.design === 'v0')
+    return `thrust ${T} g  ->  luggage scale *${Math.round(T * V0.ratio)} g*\n` +
+           `v0: link pin ${V0.pin_height - 220} mm above the thrust line (+${((V0.ratio - 1) * 100).toFixed(1)} %),\n` +
+           `30 mm off the centre plane (yaw couple ${(T / 1000 * 9.81 * 0.03).toFixed(2)} N m)\n` +
+           `and the arm cannot hang: it shares its space with the post.`;
+  if (S.scale === 'cell')
+    return `thrust ${T} g  ->  load cell *${Math.round(T * P.ratio)} g*  (1:1)\n` +
+           `the link pin sits on the thrust line, so no lever ratio;\n` +
+           `the pivot carries only the arm's weight, the post ~0 sideways.`;
+  return `thrust ${T} g  ->  pocket scale *${Math.round(T * P.ratio)} g*  (1:1)\n` +
+         `the link pulls the crank's top; its equal arm presses the anvil,\n` +
+         `on 608 bearings (< 0.1 g). Tare before each run.`;
+}
+
+// ---- burst view, swing stop ----------------------------------------------------------------------
+const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const approach = (a, b, d) => a < b ? Math.min(b, a + d) : Math.max(b, a - d);
+const STOP = P.stop_deg;
+function pose() {
+  const e = ease(S.b);
+  for (const it of items) it.group.position.copy(it.burst).multiplyScalar(e);
+  pivotG.rotation.y = -deg(STOP) * ease(S.swing);
+  grid.position.z = -19 - 160 * e;
+}
+function syncUI() {
+  $('explode').value = Math.round(S.b * 100);
+  $('explodev').textContent = `${Math.round(S.b * 100)} %`;
+  $('burst').textContent = S.bTo > 0.5 ? 'Assemble ◂' : 'Burst ▸';
+  $('swing').textContent = S.swingTo > 0.5 ? 'Link on: back to vertical' : 'Link off: let the arm swing to its stop';
+}
+function animate(dt) {
+  let moved = false;
+  if (S.b !== S.bTo) { S.b = approach(S.b, S.bTo, dt / 1.6); moved = true; }
+  if (S.swing !== S.swingTo) { S.swing = approach(S.swing, S.swingTo, dt / 1.2); moved = true; }
+  if (moved) { pose(); syncUI(); applyVisibility(); }
+}
+
+// ---- section cuts --------------------------------------------------------------------------------
+const SECTIONS = {
+  y0: { n: [0, 1, 0], c: 0, view: { dir: V(0.12, 1, -0.22), fov: 24 } },
+  post: { n: [0, 1, 0], c: 70, view: { dir: V(0.12, 1, -0.22), fov: 24 } },
+};
+function setSection(k) {
+  const s = SECTIONS[k];
+  sectionOn = !!s;
+  if (s) clipPlane.set(V3(s.n), s.c);
+  for (const m of clipMats) { m.clippingPlanes = sectionOn ? [clipPlane] : null; m.needsUpdate = true; }
+  $('section').value = s ? k : 'none';
+}
+
+// ---- views ---------------------------------------------------------------------------------------
+const box = (x0, y0, z0, x1, y1, z1) => new THREE.Box3(V(x0, y0, z0), V(x1, y1, z1));
+const VIEWS = {
+  iso_front: { dir: V(-0.85, -0.95, -0.5), fov: 24 }, iso_rear: { dir: V(0.85, -0.95, -0.5), fov: 24 },
+  side: { dir: V(0, -1, -0.04), fov: 10 }, front: { dir: V(-1, 0, -0.06), fov: 10 },
+  top: { dir: V(0, 0, -1), up: V(1, 0, 0), fov: 10 },
+  pivot: { dir: V(-1, -0.4, -0.4), box: box(-60, -110, 640, 60, 50, 760), fov: 22 },
+  motor: { dir: V(0.4, -1, -0.45), box: box(-75, -50, 165, 85, 50, 275), fov: 24 },
+  crank: { dir: V(0.35, -1, -0.32), box: box(-400, -110, -5, -30, 110, 240), fov: 22 },
+  cell: { dir: V(0.6, -1, -0.3), box: box(-262, -50, 110, -140, 50, 250), fov: 22 },
+  cal: { dir: V(-0.25, -1, -0.35), box: box(30, -40, 170, 265, 40, 235), fov: 22 },
+  swing: { dir: V(0, -1, -0.04), box: box(-120, -150, 80, 160, 60, 760), fov: 14 },
+  burst_iso: { dir: V(-0.85, -0.95, -0.5), fov: 26 },
+  v0_pivot: { dir: V(-0.75, -0.85, -0.45), box: box(-60, -60, 560, 60, 60, 740), fov: 22 },
+  v0_motor: { dir: V(-0.55, -0.95, -0.35), box: box(-50, -40, 180, 70, 40, 260), fov: 22 },
+  v0_brace: { dir: V(0.3, -1, -0.3), box: box(-420, -40, -5, -260, 40, 110), fov: 22 },
+  gallery: { dir: V(0, 0.42, -0.9), fov: 30 },
+};
+for (const [k, s] of Object.entries(SECTIONS)) VIEWS['sec_' + k] = s.view;
+
+function shown(o) { for (; o; o = o.parent) if (!o.visible) return false; return true; }
+function activeRoot() { return galleryOn ? gallery : S.design === 'v0' ? v0root : root; }
+function framePoints(clip) {
+  const pts = [], q = new THREE.Vector3();
+  scene.updateMatrixWorld(true);
+  activeRoot().traverse(o => {
+    if (!o.isMesh || !shown(o)) return;
+    const pos = o.geometry.attributes.position;
+    const step = Math.max(1, Math.floor(pos.count / 1500));
+    for (let i = 0; i < pos.count; i += step) {
+      q.fromBufferAttribute(pos, i).applyMatrix4(o.matrixWorld);
+      if (clip && !clip.containsPoint(q)) continue;
+      if (sectionOn && !galleryOn && clipPlane.distanceToPoint(q) < 0) continue;
+      pts.push(q.clone());
+    }
+  });
+  if (arrows.visible && !clip) for (const a of [arT, arF, arN])
+    if (a.visible) pts.push(a.position.clone(), a.position.clone().addScaledVector(ARROW_DIR.get(a), a.userData.len || 0));
+  if (galleryOn && !clip) for (const sub of gallery.children) {
+    if (!sub.visible) continue;
+    pts.push(V(-PITCH_X / 2, PITCH_Y / 2 + 120, 0).applyMatrix4(sub.matrixWorld));
+    for (const m of sub.children) if (m.userData.kind === 'print')
+      pts.push(m.userData.anchor.clone().add(V(0, -75, 0)).applyMatrix4(sub.matrixWorld));
+  }
+  return pts;
+}
+function viewSpec(v, aspect, pts = framePoints(v.box)) {
+  const f = v.dir.clone().normalize();
+  const up = (v.up || V(0, 0, 1)).clone();
+  const r = new THREE.Vector3().crossVectors(f, up).normalize();
+  const u = new THREE.Vector3().crossVectors(r, f).normalize();
+  const fov = v.fov || 30;
+  const tv = Math.tan(deg(fov / 2)), th = tv * aspect;
+  if (!pts.length) return null;
+  const t = new THREE.Box3().setFromPoints(pts).getCenter(new THREE.Vector3());
+  const q = new THREE.Vector3();
+  let d = 0;
+  for (let it = 0; it < 4; it++) {
+    d = 0;
+    for (const p of pts) {
+      q.subVectors(p, t);
+      d = Math.max(d, Math.abs(q.dot(r)) / th - q.dot(f), Math.abs(q.dot(u)) / tv - q.dot(f));
+    }
+    const c = t.clone().addScaledVector(f, -d);
+    let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    for (const p of pts) {
+      q.subVectors(p, c);
+      const z = q.dot(f), x = q.dot(r) / (z * th), y = q.dot(u) / (z * tv);
+      x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y);
+    }
+    t.addScaledVector(r, (x0 + x1) / 2 * th * d).addScaledVector(u, (y0 + y1) / 2 * tv * d);
+  }
+  d *= 1.06;
+  return { pos: t.clone().addScaledVector(f, -d), target: t, up: u, fov };
+}
+function resetControls(target) {
+  controls.dispose();
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.target.copy(target);
+  controls.update();
+}
+function applySpec(s) {
+  camera.fov = s.fov; camera.up.copy(s.up);
+  camera.position.copy(s.pos); camera.lookAt(s.target);
+  camera.updateProjectionMatrix();
+  resetControls(s.target);
+}
+let tween = null;
+function frameView(v, aspect = camera.aspect) {
+  tween = null;
+  const s = viewSpec(typeof v === 'string' ? VIEWS[v] : v, aspect);
+  if (s) applySpec(s);
+}
+function tweenTo(s, dur) {
+  if (!s) return;
+  tween = { from: { pos: camera.position.clone(), target: controls.target.clone(), up: camera.up.clone(), fov: camera.fov },
+            to: s, t: 0, dur };
+}
+function stepTween(dt) {
+  if (!tween) return;
+  tween.t = Math.min(1, tween.t + dt / tween.dur);
+  const k = ease(tween.t), a = tween.from, b = tween.to;
+  camera.position.lerpVectors(a.pos, b.pos, k);
+  controls.target.lerpVectors(a.target, b.target, k);
+  camera.up.lerpVectors(a.up, b.up, k).normalize();
+  camera.fov = a.fov + (b.fov - a.fov) * k;
+  camera.lookAt(controls.target);
+  camera.updateProjectionMatrix();
+  if (tween.t >= 1) { tween = null; resetControls(b.target); }
+}
+
+// ---- labels (overlay canvas, and drawn into captured images) -------------------------------------
+const fmtMin = m => m == null ? '?' : m < 60 ? `${Math.round(m)} min` : `${Math.floor(m / 60)} h ${String(Math.round(m % 60)).padStart(2, '0')} min`;
+function topOf(o) {
+  const b = new THREE.Box3().setFromObject(o);
+  return V((b.min.x + b.max.x) / 2, (b.min.y + b.max.y) / 2, b.max.z + 2);
+}
+function labelList(w, h) {
+  const out = [];
+  const add = (p, text, kind, half = 0) => {
+    if (sectionOn && !galleryOn && clipPlane.distanceToPoint(p) < -3) return;
+    const q = p.clone().project(camera);
+    if (q.z > 1 || q.z < -1 || Math.abs(q.x) > 1.02 || Math.abs(q.y) > 1.02) return;
+    let maxw = Infinity;
+    if (half) {
+      const a = p.clone().add(V(-half, 0, 0)).project(camera), b = p.clone().add(V(half, 0, 0)).project(camera);
+      maxw = Math.abs(b.x - a.x) / 2 * w;
+    }
+    out.push({ x: (q.x + 1) / 2 * w, y: (1 - q.y) / 2 * h, text, kind, maxw });
+  };
+  if (galleryOn) {
+    for (const sub of gallery.children) {
+      if (!sub.visible) continue;
+      add(V(-PITCH_X / 2, PITCH_Y / 2 + 40, 0).applyMatrix4(sub.matrixWorld), sub.userData.title, 'title');
+      for (const m of sub.children) if (m.userData.kind === 'print')
+        add(m.userData.anchor.clone().applyMatrix4(sub.matrixWorld), m.userData.labelText, 'print', 125);
+    }
+  } else if (S.design === 'v0') {
+    for (const m of clashMeshes) add(topOf(m), m.userData.item.label.replace(/: /, ':\n'), 'equip');
+  } else {
+    for (const it of items) {
+      if (!it.label || !shown(it.group)) continue;
+      const t = it.info;
+      const p = it.kind === 'tube' ? V3(t.a).lerp(V3(t.b), 0.42).add(it.group.position) : topOf(it.group);
+      add(p, it.label, 'equip');
+    }
+  }
+  return out;
+}
+function drawLabels(g, w, h, s = 1) {
+  const pad = 4 * s, lh = 14 * s;
+  const list = [];
+  for (const L of labelList(w, h)) {
+    g.font = L.kind === 'title' ? `600 ${15 * s}px system-ui, sans-serif` : `${11.5 * s}px system-ui, sans-serif`;
+    L.lines = L.text.split('\n');
+    const width = () => Math.max(...L.lines.map(t => g.measureText(t).width)) + 2 * pad;
+    if (width() > L.maxw) L.lines = [L.lines[0]];
+    while (width() > L.maxw && L.lines[0].length > 4) L.lines[0] = L.lines[0].slice(0, -2).replace(/…?$/, '…');
+    if (width() > L.maxw) continue;
+    L.w = width(); L.h = L.lines.length * lh + 1.5 * pad;
+    if (L.kind === 'title') { L.bx = L.x; L.by = L.y - L.h; }
+    else if (L.kind === 'print') { L.bx = L.x - L.w / 2; L.by = L.y + 3 * s; }
+    else { L.bx = L.x - L.w / 2; L.by = L.y - L.h - 14 * s; }
+    L.bx = Math.max(2, Math.min(w - L.w - 2, L.bx));
+    list.push(L);
+  }
+  // Labels that would overlap move up or down (alternating) until they fit, and stay on screen.
+  const placed = [];
+  for (const L of list.filter(l => l.kind === 'equip').sort((a, b) => a.y - b.y)) {
+    const by0 = L.by;
+    const hits = by => placed.some(Q => L.bx < Q.bx + Q.w + 3 && Q.bx < L.bx + L.w + 3 && by < Q.by + Q.h + 3 && Q.by < by + L.h + 3);
+    for (let k = 0; k < 41; k++) {
+      const by = Math.max(2, Math.min(h - L.h - 2, by0 + (k % 2 ? 1 : -1) * Math.ceil(k / 2) * (L.h + 3)));
+      if (!hits(by)) { L.by = by; break; }
+    }
+    placed.push(L);
+  }
+  g.textBaseline = 'top';
+  for (const L of list) {
+    if (L.kind === 'equip') {
+      const ty = L.by > L.y ? L.by : L.by + L.h;
+      g.strokeStyle = '#2b333c'; g.fillStyle = '#2b333c'; g.lineWidth = s;
+      g.beginPath(); g.moveTo(L.x, L.y); g.lineTo(L.bx + L.w / 2, ty); g.stroke();
+      g.beginPath(); g.arc(L.x, L.y, 2.2 * s, 0, 2 * Math.PI); g.fill();
+    }
+    g.fillStyle = S.design === 'v0' && L.kind === 'equip' ? '#fff1f0ee' : L.kind === 'title' ? '#ffffffee' : '#ffffffe6';
+    g.strokeStyle = S.design === 'v0' && L.kind === 'equip' ? '#e0312b' : '#a7b0ba'; g.lineWidth = s;
+    g.beginPath();
+    if (g.roundRect) g.roundRect(L.bx, L.by, L.w, L.h, 4 * s); else g.rect(L.bx, L.by, L.w, L.h);
+    g.fill(); g.stroke();
+    g.fillStyle = '#1d2329';
+    g.font = L.kind === 'title' ? `600 ${15 * s}px system-ui, sans-serif` : `${11.5 * s}px system-ui, sans-serif`;
+    L.lines.forEach((t, i) => g.fillText(t, L.bx + pad, L.by + 0.75 * pad + i * lh));
+  }
+}
+function drawReadout(g, w, h, s = 1) {
+  if (!(S.thrust > 0) || galleryOn) return;
+  const lines = readoutText().split('\n'), pad = 9 * s, lh = 17 * s;
+  g.font = `${13 * s}px system-ui, sans-serif`;
+  const bw = Math.max(...lines.map(t => g.measureText(t.replace(/\*/g, '')).width)) + 2 * pad, bh = lines.length * lh + 1.2 * pad;
+  const bx = w - bw - 12 * s, by = 12 * s;
+  g.fillStyle = '#1f2630e6'; g.beginPath();
+  if (g.roundRect) g.roundRect(bx, by, bw, bh, 7 * s); else g.rect(bx, by, bw, bh);
+  g.fill();
+  g.textBaseline = 'top';
+  lines.forEach((t, i) => {
+    let x = bx + pad;
+    t.split(/(\*[^*]+\*)/).forEach(seg => {
+      const bold = seg.startsWith('*');
+      const txt = bold ? seg.slice(1, -1) : seg;
+      g.font = `${bold ? '700 ' : ''}${13 * s}px system-ui, sans-serif`;
+      g.fillStyle = bold ? '#ffd166' : '#ffffff';
+      g.fillText(txt, x, by + 0.6 * pad + i * lh);
+      x += g.measureText(txt).width;
+    });
+  });
+}
+
+// ---- hover tooltip and double-click zoom ---------------------------------------------------------
+function describe(it) {
+  const i = it.info || {};
+  if (it.kind === 'part') {
+    const f = fileOf[i.file] || {};
+    return `${it.name}${i.file !== it.name ? ` (prints from ${i.file}.stl)` : ''} — ${i.role}\n` +
+           `PETG · ${f.grams != null ? f.grams.toFixed(1) + ' g' : '? g'} · ${fmtMin(f.minutes)} on the Kobra S1`;
+  }
+  if (it.kind === 'tube' || it.kind === 'bolt' || it.kind === 'board') return i.role || it.name;
+  if (it.kind === 'bought') return i.label || it.name;
+  if (it.kind === 'line') return i.label || it.name.replace(/_/g, ' ');
+  if (it.kind === 'v0part') return `v0 ${it.name} (as audited)`;
+  if (it.kind === 'v0tube') return i.role || `v0 ${it.name} tube`;
+  if (it.kind === 'clash') return `CLASH: ${i.label}\n${i.volume} mm3 of overlap`;
+  if (it.kind === 'print') return `${it.name}${i.copies > 1 ? ' ×' + i.copies : ''} — ${i.role}\n` +
+    `${i.size.join(' × ')} mm as printed · ${i.grams != null ? i.grams.toFixed(1) + ' g' : '? g'} · ${fmtMin(i.minutes)}`;
+  return it.name;
+}
+const ray = new THREE.Raycaster();
+const tip = $('tip');
+let pointer = null, lastHover = 0;
+renderer.domElement.addEventListener('pointermove', e => { pointer = e; });
+renderer.domElement.addEventListener('pointerleave', () => { pointer = null; tip.style.display = 'none'; });
+function pickAt(e) {
+  const r = renderer.domElement.getBoundingClientRect();
+  ray.setFromCamera(new THREE.Vector2((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1), camera);
+  for (const h of ray.intersectObject(activeRoot(), true)) {
+    const mt = h.object.material;
+    if (!h.object.isMesh || !shown(h.object) || (mt.transparent && mt.opacity < 0.4)) continue;
+    if (sectionOn && !galleryOn && clipPlane.distanceToPoint(h.point) < 0) continue;
+    const it = h.object.userData.item;
+    if (it) return { it, obj: h.object };
+  }
+  return null;
+}
+function hover(now) {
+  if (!pointer || now - lastHover < 80 || tween) return;
+  lastHover = now;
+  const hit = pickAt(pointer);
+  if (!hit) { tip.style.display = 'none'; return; }
+  tip.textContent = describe(hit.it);
+  tip.style.left = `${Math.min(pointer.clientX + 14, innerWidth - tip.offsetWidth - 8)}px`;
+  tip.style.top = `${pointer.clientY + 16}px`;
+  tip.style.display = 'block';
+}
+renderer.domElement.addEventListener('dblclick', e => {
+  const hit = pickAt(e);
+  if (!hit) return;
+  const target = hit.it.group || hit.obj;
+  const b = new THREE.Box3().setFromObject(target).expandByScalar(8);
+  tweenTo(viewSpec({ dir: camera.getWorldDirection(new THREE.Vector3()), up: camera.up.clone(), fov: camera.fov, box: b },
+                   camera.aspect), 0.8);
+});
+
+// ---- the print files on the Kobra S1's 250 mm bed ------------------------------------------------
+let gallery = null, galleryFilter = 'all';
+const PITCH_X = 290, PITCH_Y = 330, COLS = 6;
+const GROUPS = [['core', 'Every build'], ['bench', 'Pocket-scale option'], ['cell', 'Load-cell option'],
+                ['cal', 'Calibration'], ['guy', 'Optional']];
+function buildGallery() {
+  const gm = new THREE.MeshStandardMaterial({ color: COL.petg, roughness: 0.45 });
+  const bedMat = new THREE.MeshStandardMaterial({ color: 0xdde2e7, roughness: 0.95 });
+  const bedEdge = new THREE.LineBasicMaterial({ color: 0x8e98a3 });
+  const grp = new THREE.Group(); grp.visible = false; scene.add(grp);
+  for (const [opt, title] of GROUPS) {
+    const sub = new THREE.Group();
+    const list = man.files.filter(f => f.option === opt);
+    let grams = 0, minutes = 0;
+    list.forEach((f, i) => {
+      const cx = (i % COLS) * PITCH_X, cy = -Math.floor(i / COLS) * PITCH_Y;
+      const plate = new THREE.PlaneGeometry(f.bed, f.bed);
+      const bed = new THREE.Mesh(plate, bedMat); bed.position.set(cx, cy, -0.5);
+      const edge = new THREE.LineSegments(new THREE.EdgesGeometry(plate), bedEdge); edge.position.copy(bed.position);
+      const m = new THREE.Mesh(geos.get(f.url), gm); m.position.set(cx, cy, 0);
+      m.userData = { kind: 'print', anchor: V(cx, cy - f.bed / 2 - 2, 0),
+                     labelText: `${f.name}${f.copies > 1 ? ' ×' + f.copies : ''}\n${f.grams != null ? f.grams.toFixed(1) + ' g · ' : ''}${fmtMin(f.minutes)}`,
+                     item: { kind: 'print', name: f.name, info: f } };
+      sub.add(bed, edge, m);
+      grams += (f.grams || 0) * f.copies; minutes += (f.minutes || 0) * f.copies;
+    });
+    sub.userData = { key: opt, rows: Math.ceil(list.length / COLS), cols: Math.min(COLS, list.length),
+                     title: `${title}\n${list.length} file${list.length > 1 ? 's' : ''} · ${Math.round(grams)} g · ${fmtMin(minutes)}` };
+    grp.add(sub);
+  }
+  gallery = grp;
+}
+// Groups flow left to right on shelves of COLS beds, so the small option groups share a row.
+function layoutGallery() {
+  let y = 0, used = 0, rows = 0;
+  for (const sub of gallery.children) {
+    sub.visible = galleryFilter === 'all' || galleryFilter === sub.userData.key;
+    if (!sub.visible) continue;
+    const { cols } = sub.userData;
+    if (used && used + cols > COLS) { y -= rows * PITCH_Y + 190; used = 0; rows = 0; }
+    sub.position.set(used * PITCH_X + (used ? 60 : 0), y, 0);
+    used += cols; rows = Math.max(rows, sub.userData.rows);
+  }
+}
+function showGallery(on) {
+  if (on && !gallery) buildGallery();
+  galleryOn = on;
+  gallery.visible = on;
+  if (on) layoutGallery();
+  $('back').style.display = on ? '' : 'none';
+  $('gallery').style.display = on ? 'none' : '';
+  document.querySelectorAll('#ui .stand').forEach(el => el.style.display = on ? 'none' : '');
+  if (!on) applyVisibility(); else { root.visible = false; v0root.visible = false; updateForces(); }
+  tip.style.display = 'none';
+  updateLegend();
+  frameView(on ? 'gallery' : 'iso_front');
+}
+function updateLegend() {
+  const sw = (c, t) => `<span class="sw" style="background:${c}"></span>${t}`;
+  $('legend').innerHTML = galleryOn ? sw('#2f6db5', 'PETG') + sw('#dde2e7', 'Kobra S1 bed, 250 mm')
+    : S.design === 'v0' ? sw('#9db3c9', 'v0 parts') + sw('#f3f2ec', 'v0 tubes') + sw('#e0312b', 'clash')
+    : sw('#2f6db5', 'PETG') + sw('#f3f2ec', 'tubes') + sw('#a3abb5', 'bolts') + sw('#c9a46a', 'board') +
+      (S.thrust > 0 ? sw('#d62828', 'thrust') + sw('#14853f', 'link pull (drawn above the link)') +
+                      (S.scale === 'bench' ? sw('#1f6fd1', 'press on the anvil') : '') : '');
+}
+
+// ---- page wiring and render loop -----------------------------------------------------------------
+function resize() {
+  const w = capture ? 1600 : innerWidth, h = capture ? 1000 : innerHeight;
+  renderer.setSize(w, h, !capture);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+  const dpr = capture ? 1 : devicePixelRatio;
+  overlay.width = Math.round(w * dpr); overlay.height = Math.round(h * dpr);
+  overlay.style.width = `${w}px`; overlay.style.height = `${h}px`;
+}
+addEventListener('resize', resize);
+resize();
+applyLook();
+applyVisibility();
+pose();
+syncUI();
+frameView('iso_front');
+
+document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => {
+  const k = b.dataset.view;
+  if (k === 'cell' && S.scale !== 'cell') { S.scale = 'cell'; document.querySelector('input[name=scale][value=cell]').checked = true; applyVisibility(); }
+  if (k === 'cal' && !S.cal) { S.cal = true; $('cal').checked = true; applyVisibility(); }
+  if (k === 'crank' && S.scale !== 'bench') { S.scale = 'bench'; document.querySelector('input[name=scale][value=bench]').checked = true; applyVisibility(); }
+  frameView(k);
+});
+document.querySelectorAll('input[name=design]').forEach(r => r.onchange = () => {
+  S.design = r.value; if (S.design === 'v0') { S.b = S.bTo = 0; S.swing = S.swingTo = 0; pose(); syncUI(); }
+  applyVisibility(); frameView('iso_front');
+});
+document.querySelectorAll('input[name=scale]').forEach(r => r.onchange = () => { S.scale = r.value; applyVisibility(); });
+document.querySelectorAll('input[name=mode]').forEach(r => r.onchange = () => { S.mode = r.value; applyLook(); });
+for (const id of ['cal', 'guy', 'bought', 'bolts', 'cables', 'labels']) $(id).onchange = e => { S[id] = e.target.checked; applyVisibility(); };
+$('xray').onchange = e => { S.xray = e.target.checked; applyLook(); };
+$('prop').onchange = e => { S.prop = +e.target.value; applyVisibility(); };
+$('thrust').oninput = e => { S.thrust = +e.target.value; $('thrustv').textContent = `${S.thrust} g`; updateForces(); updateLegend(); };
+$('swing').onclick = () => { S.swingTo = S.swingTo > 0.5 ? 0 : 1; syncUI(); };
+$('burst').onclick = () => { S.bTo = S.bTo > 0.5 ? 0 : 1; syncUI(); };
+$('explode').oninput = e => { S.b = S.bTo = +e.target.value / 100; pose(); syncUI(); applyVisibility(); };
+$('section').onchange = e => { setSection(e.target.value); if (sectionOn) frameView('sec_' + e.target.value); };
+$('gallery').onclick = () => showGallery(true);
+$('back').onclick = () => showGallery(false);
+$('gfilter').onchange = e => { galleryFilter = e.target.value; if (!galleryOn) showGallery(true); else { layoutGallery(); frameView('gallery'); } };
+const ui = $('ui');
+ui.querySelector('h1').onclick = () => ui.classList.toggle('min');
+if (innerWidth < 700) ui.classList.add('min');
+status.textContent = `${man.placements.length} printed parts, ${man.bolts.length} bolts — drag to orbit, wheel to zoom, right-drag to pan`;
+if (!capture) setTimeout(() => { status.textContent = ''; }, 8000);
+
+function draw() {
+  const dist = camera.position.distanceTo(controls.target);
+  camera.near = Math.max(1, dist * 0.02);
+  camera.far = dist * 6 + 4000;
+  camera.updateProjectionMatrix();
+  grid.visible = gridOn && !galleryOn && camera.position.z > grid.position.z;
+  renderer.render(scene, camera);
+  if (capture) return;
+  const w = renderer.domElement.clientWidth, h = renderer.domElement.clientHeight, s = overlay.width / Math.max(1, w);
+  octx.setTransform(1, 0, 0, 1, 0, 0);
+  octx.clearRect(0, 0, overlay.width, overlay.height);
+  if (S.labels) { octx.setTransform(s, 0, 0, s, 0, 0); drawLabels(octx, w, h); }
+}
+let last = performance.now();
+function loop(now) {
+  requestAnimationFrame(loop);
+  const dt = Math.min(0.1, Math.max(0, (now - last) / 1000)); last = now;
+  animate(dt); stepTween(dt); hover(now); draw();
+}
+requestAnimationFrame(loop);
+
+// ---- capture mode: /viewer/?capture=1 posts PNGs and GIF frames to scripts/serve_viewer.py ----------
+if (capture) {
+  const onlyGifs = params.get('capture') === 'gif', onlyStills = params.get('capture') === 'stills';
+  ui.style.display = 'none';
+  $('readout').style.visibility = 'hidden';
+  const base = { design: 'v1', scale: 'bench', cal: false, guy: false, bought: true, bolts: true, cables: true,
+                 labels: false, xray: false, mode: 'printed', prop: 7, thrust: 0, swing: 0, b: 0, section: 'none', gallery: null };
+  const shot = (name, view, o = {}) => ({ name, view, ...base, ...o });
+  const shots = [
+    shot('01_iso_front', 'iso_front'), shot('02_iso_rear', 'iso_rear'), shot('03_side', 'side'),
+    shot('04_front_prop', 'front'), shot('05_top', 'top'),
+    shot('06_labelled', 'iso_front', { labels: true }),
+    shot('07_pivot', 'pivot', { labels: true, xray: true }), shot('08_motor_fork', 'motor', { labels: true, xray: true, cables: false }),
+    shot('09_bell_crank', 'crank', { labels: true }),
+    shot('10_load_cell', 'cell', { scale: 'cell', labels: true }),
+    shot('11_cut_centre_plane', 'sec_y0', { section: 'y0', labels: true }),
+    shot('12_forces_1500g', 'side', { thrust: 1500 }),
+    shot('13_burst', 'burst_iso', { b: 1, labels: true, cables: false }),
+    shot('14_calibration', 'cal', { cal: true, labels: true }),
+    shot('15_swing_stop_10in', 'swing', { swing: 1, prop: 10 }),
+    shot('16_load_cell_build', 'iso_front', { scale: 'cell' }),
+    shot('17_v0_audit', 'iso_front', { design: 'v0', labels: true }),
+    shot('18_v0_pivot', 'v0_pivot', { design: 'v0', labels: true }),
+    shot('19_v0_motor_clamp', 'v0_motor', { design: 'v0', labels: true }),
+    shot('20_v0_brace_foot', 'v0_brace', { design: 'v0', labels: true }),
+    shot('21_v0_forces_1500g', 'side', { design: 'v0', thrust: 1500 }),
+    shot('22_print_files', 'gallery', { gallery: 'all', labels: true }),
+  ];
+  const shotImg = new Map();
+  async function postOk(url, body) {
+    for (let k = 1; ; k++) {
+      try {
+        const res = await fetch(url, { method: 'POST', body });
+        await res.text();
+        if (res.ok) return;
+        if (res.status < 500) k = 4;
+        throw new Error(`HTTP ${res.status}`);
+      } catch (e) {
+        if (k >= 4) { document.title = `capture-error ${url}`; status.textContent = `capture failed: ${url}`; throw e; }
+        await new Promise(r => setTimeout(r, 500 * k));
+      }
+    }
+  }
+  async function snap(withLabels, withReadout) {
+    draw();
+    const blob = await new Promise(r => renderer.domElement.toBlob(r, 'image/png'));
+    if (!withLabels && !withReadout) return blob;
+    const img = await createImageBitmap(blob);
+    const c = document.createElement('canvas');
+    c.width = img.width; c.height = img.height;
+    const g = c.getContext('2d');
+    g.drawImage(img, 0, 0);
+    if (withLabels) drawLabels(g, img.width, img.height, 1.3);
+    if (withReadout) drawReadout(g, img.width, img.height, 1.3);
+    return new Promise(r => c.toBlob(r, 'image/png'));
+  }
+  function setState(s) {
+    Object.assign(S, { design: s.design, scale: s.scale, cal: s.cal, guy: s.guy, bought: s.bought, bolts: s.bolts,
+                       cables: s.cables, labels: s.labels, xray: s.xray, mode: s.mode, prop: s.prop, thrust: s.thrust });
+    S.b = S.bTo = s.b; S.swing = S.swingTo = s.swing;
+    applyLook(); pose(); applyVisibility(); setSection(s.section);
+  }
+  for (const s of onlyGifs ? [] : shots) {
+    if (s.gallery) { galleryFilter = s.gallery; if (!galleryOn) showGallery(true); else layoutGallery(); }
+    else if (galleryOn) showGallery(false);
+    setState(s);
+    frameView(s.view);
+    const blob = await snap(s.labels, s.thrust > 0);
+    shotImg.set(s.name, await createImageBitmap(blob));
+    await postOk(`/__capture__/${s.name}.png`, blob);
+    status.textContent = `captured ${s.name}`;
+  }
+  const SHEETS = {
+    '00_all_sides': [['01_iso_front', '3/4 front'], ['02_iso_rear', '3/4 rear'], ['03_side', 'side'],
+                     ['04_front_prop', 'front, 7 in prop'], ['05_top', 'top'], ['16_load_cell_build', 'load-cell build']],
+    '00_details': [['07_pivot', 'pivot head and hub (x-ray)'], ['08_motor_fork', 'motor clamp, plate, link fork (x-ray)'],
+                   ['09_bell_crank', 'bell crank on the 0.1 g pocket scale'], ['10_load_cell', 'load-cell option'],
+                   ['11_cut_centre_plane', 'cut on the centre plane'], ['14_calibration', 'calibration pulley'],
+                   ['12_forces_1500g', 'forces at 1500 g'], ['15_swing_stop_10in', 'link off: the swing stop, 10 in prop'],
+                   ['13_burst', 'burst view']],
+    '00_v0_audit': [['17_v0_audit', 'v0 as audited: clashes in red'], ['18_v0_pivot', 'v0 pivot: the arm runs into the post'],
+                    ['19_v0_motor_clamp', 'v0 motor clamp: bolt in the motor, screws miss'],
+                    ['20_v0_brace_foot', 'v0 brace: misses its foot socket'], ['21_v0_forces_1500g', 'v0 forces: +0.8 %'],
+                    ['06_labelled', 'v1, labelled']],
+  };
+  for (const [sheet, tiles] of onlyGifs ? [] : Object.entries(SHEETS)) {
+    const W = 640, H = 400, cols = 3;
+    const c = document.createElement('canvas');
+    c.width = W * cols; c.height = H * Math.ceil(tiles.length / cols);
+    const g = c.getContext('2d');
+    g.fillStyle = '#eef1f4'; g.fillRect(0, 0, c.width, c.height);
+    g.font = '18px system-ui, sans-serif';
+    tiles.forEach(([n, label], i) => {
+      const x = (i % cols) * W, y = Math.floor(i / cols) * H;
+      g.drawImage(shotImg.get(n), x, y, W, H);
+      g.fillStyle = '#ffffffd9'; g.fillRect(x + 8, y + 8, g.measureText(label).width + 18, 30);
+      g.fillStyle = '#222'; g.fillText(label, x + 17, y + 29);
+      g.strokeStyle = '#c3c9d0'; g.strokeRect(x + 0.5, y + 0.5, W - 1, H - 1);
+    });
+    await postOk(`/__capture__/${sheet}.png`, await new Promise(r => c.toBlob(r, 'image/png')));
+  }
+  // Animations for README.md: a turntable, the burst view, and a thrust sweep with the scale's reading.
+  const place = s => {
+    camera.fov = s.fov; camera.up.copy(s.up); camera.position.copy(s.pos); camera.lookAt(s.target);
+    camera.updateProjectionMatrix(); controls.target.copy(s.target);
+  };
+  async function movie(name, frames, width = 800, readout = false) {
+    for (let i = 0; i < frames.length; i++) {
+      frames[i].set();
+      const blob = await snap(false, readout);
+      await postOk(`/__frame__/${name}/${i}.png?ms=${frames[i].ms}`, blob);
+      status.textContent = `recording ${name} ${i + 1}/${frames.length}`;
+    }
+    await postOk(`/__movie__/${name}.gif?w=${width}`);
+  }
+  function swingFrames(set, n, ms, hold) {
+    const f = [{ set: () => set(0), ms: hold }];
+    for (let k = 1; k <= n; k++) f.push({ set: () => set(k / n), ms: k === n ? hold : ms });
+    for (let k = n - 1; k >= 1; k--) f.push({ set: () => set(k / n), ms });
+    return f;
+  }
+  function fitOver(view, states) {
+    const pts = [];
+    for (const st of states) { st(); for (const p of framePoints(view.box)) pts.push(p); }
+    return viewSpec(view, camera.aspect, pts);
+  }
+  function orbit(view, n) {
+    const f0 = view.dir.clone().normalize(), el = Math.asin(-f0.z), az0 = Math.atan2(f0.y, f0.x);
+    const fov = view.fov || 30, tv = Math.tan(deg(fov / 2)), th = tv * camera.aspect;
+    const pts = framePoints(), t = new THREE.Box3().setFromPoints(pts).getCenter(V(0, 0, 0)), q = V(0, 0, 0);
+    let d = 0;
+    const axes = [];
+    for (let i = 0; i < n; i++) {
+      const az = az0 + 2 * Math.PI * i / n;
+      const f = V(Math.cos(az) * Math.cos(el), Math.sin(az) * Math.cos(el), -Math.sin(el));
+      const r = new THREE.Vector3().crossVectors(f, V(0, 0, 1)).normalize();
+      const u = new THREE.Vector3().crossVectors(r, f).normalize();
+      for (const p of pts) {
+        q.subVectors(p, t);
+        d = Math.max(d, Math.abs(q.dot(r)) / th - q.dot(f), Math.abs(q.dot(u)) / tv - q.dot(f));
+      }
+      axes.push([f, u]);
+    }
+    return axes.map(([f, u]) => ({ pos: t.clone().addScaledVector(f, -1.04 * d), target: t, up: u, fov }));
+  }
+  if (galleryOn) showGallery(false);
+  gridOn = false;
+  setState({ ...base });
+  if (onlyStills) { document.title = 'capture-done'; status.textContent = 'capture done'; }
+  else {
+  await movie('anim_turntable', orbit(VIEWS.iso_front, 48).map(s => ({ set: () => place(s), ms: 70 })));
+  const atB = k => { S.b = S.bTo = k; pose(); applyVisibility(); };
+  place(fitOver(VIEWS.burst_iso, [() => atB(0), () => atB(1)]));
+  await movie('anim_burst', swingFrames(k => atB(ease(k)), 24, 50, 1200));
+  atB(0);
+  setState({ ...base, cables: false });
+  const atT = k => { S.thrust = Math.round(2000 * k / 10) * 10; updateForces(); };
+  place(fitOver(VIEWS.side, [() => atT(0), () => atT(1)]));
+  await movie('anim_thrust', swingFrames(atT, 20, 90, 1400), 800, true);
+  document.title = 'capture-done';
+  status.textContent = 'capture done';
+  }
+}
+</script>
+</body>
+</html>

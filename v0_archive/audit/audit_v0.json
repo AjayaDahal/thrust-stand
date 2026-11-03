@@ -1,0 +1,62 @@
+{
+ "clashes": [
+  {
+   "key": "arm_post",
+   "label": "arm and post are the same cylinder from z 182 to 635: the pendulum cannot hang",
+   "volume": 229538,
+   "url": "../v0_archive/audit/clash_arm_post.stl"
+  },
+  {
+   "key": "arm_clevis",
+   "label": "arm runs into the pivot clevis's socket block",
+   "volume": 5067,
+   "url": "../v0_archive/audit/clash_arm_clevis.stl"
+  },
+  {
+   "key": "bolt_motor",
+   "label": "motor clamp's M5 cross-bolt and nut end in the motor",
+   "volume": 118,
+   "url": "../v0_archive/audit/clash_bolt_motor.stl"
+  },
+  {
+   "key": "screws_plate",
+   "label": "2807 screws (19x19) miss the plate's 19 mm-circle holes",
+   "volume": 113,
+   "url": "../v0_archive/audit/clash_screws_plate.stl"
+  },
+  {
+   "key": "heads_clamp",
+   "label": "M3 screw heads have no room between the plate and the clamp",
+   "volume": 285,
+   "url": "../v0_archive/audit/clash_heads_clamp.stl"
+  },
+  {
+   "key": "brace_foot",
+   "label": "brace tube on the clamp socket's axis misses the foot's socket",
+   "volume": 11644,
+   "url": "../v0_archive/audit/clash_brace_foot.stl"
+  }
+ ],
+ "grips_post": [
+  "motor_clamp",
+  "brace_clamp"
+ ],
+ "pin_height": 224.0,
+ "ratio": 1.0084,
+ "ratio_hook_minus10": 1.0183,
+ "ratio_hook_plus10": 1.0046,
+ "plate_2807_hole_square": 13.44,
+ "motor_2807_square": 19.0,
+ "plate_2212_holes": "rectangle 16 x 19 (+-8, +-9.5)",
+ "motor_2212_holes": "cross: 16 on one axis, 19 on the other",
+ "hub_swing_deg": 4.1,
+ "post_flex_claim_mm": 52.9,
+ "post_flex_pendulum_mm": 0.44,
+ "yaw_couple_Nm": 0.45,
+ "brace_axis_offset_mm": 17.7,
+ "m6x35_left_mm": 0.8,
+ "flange_overhang_mm": 15.0,
+ "tab_overhang_mm": 18.0,
+ "thin_tube_needed_mm": 605,
+ "nut_wall_mm": 0.0
+}

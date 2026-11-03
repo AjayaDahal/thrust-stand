@@ -1,0 +1,6 @@
+# Python packages for scripts/ (versions the gate passes with). The slicer, Anycubic Slicer Next,
+# is a separate install: only build_all.py and slice_all.py need it.
+build123d==0.13.0
+numpy==2.4.6
+matplotlib==3.11.2
+pillow==13.0.0

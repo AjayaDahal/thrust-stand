@@ -1,0 +1,2983 @@
+{
+ "version": "v1",
+ "files": [
+  {
+   "name": "post_foot",
+   "url": "../stl/post_foot.stl",
+   "option": "core",
+   "role": "post foot: the post stands on the board through it",
+   "size": [
+    100.0,
+    100.0,
+    50.0
+   ],
+   "grams": 133.79,
+   "minutes": 350.6,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "pivot_head",
+   "url": "../stl/pivot_head.stl",
+   "option": "core",
+   "role": "pivot head: caps the post, carries the axle over the arm, stops the swing at ~4 deg",
+   "size": [
+    60.0,
+    132.0,
+    64.0
+   ],
+   "grams": 150.97,
+   "minutes": 382.8,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "arm_hub",
+   "url": "../stl/arm_hub.stl",
+   "option": "core",
+   "role": "arm hub: pinned to the axle and the arm, swings between the cheeks",
+   "size": [
+    60.0,
+    50.0,
+    70.0
+   ],
+   "grams": 99.17,
+   "minutes": 257.3,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "motor_clamp",
+   "url": "../stl/motor_clamp.stl",
+   "option": "core",
+   "role": "motor clamp: arm end, motor plate on the front, link fork on the back",
+   "size": [
+    76.0,
+    50.0,
+    60.0
+   ],
+   "grams": 92.53,
+   "minutes": 230.6,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "motor_plate",
+   "url": "../stl/motor_plate.stl",
+   "option": "core",
+   "role": "motor plate: 19x19 and 16/19-cross patterns, M3 heads recessed",
+   "size": [
+    60.0,
+    56.0,
+    8.0
+   ],
+   "grams": 17.47,
+   "minutes": 50.9,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "crank_link",
+   "url": "../stl/crank_link.stl",
+   "option": "bench",
+   "role": "link: arm fork to the crank, on the thrust line",
+   "size": [
+    219.2,
+    219.2,
+    5.0
+   ],
+   "grams": 15.19,
+   "minutes": 36.3,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "crank",
+   "url": "../stl/crank.stl",
+   "option": "bench",
+   "role": "bell crank, equal arms: the link's pull presses the anvil on the scale 1:1",
+   "size": [
+    209.0,
+    213.0,
+    16.0
+   ],
+   "grams": 111.59,
+   "minutes": 286.4,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "crank_spacer",
+   "url": "../stl/crank_spacer.stl",
+   "option": "bench",
+   "role": "spacer between the crank bearings' inner races",
+   "size": [
+    11.5,
+    11.5,
+    2.0
+   ],
+   "grams": 0.12,
+   "minutes": 5.4,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "crank_base",
+   "url": "../stl/crank_base.stl",
+   "option": "bench",
+   "role": "crank base: holds the crank's axle at the nose's height; slots set the arm plumb",
+   "size": [
+    90.0,
+    80.0,
+    46.0
+   ],
+   "grams": 51.58,
+   "minutes": 126.3,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "scale_anvil",
+   "url": "../stl/scale_anvil.stl",
+   "option": "bench",
+   "role": "anvil on the platform's centre: lifts the contact to the crank's pivot height",
+   "size": [
+    50.0,
+    44.0,
+    15.0
+   ],
+   "grams": 13.95,
+   "minutes": 36.7,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "scale_corner",
+   "url": "../stl/scale_corner.stl",
+   "option": "bench",
+   "role": "corner stop: the scale goes back to the same place after weighing parts",
+   "size": [
+    50.0,
+    50.0,
+    12.0
+   ],
+   "grams": 8.43,
+   "minutes": 25.5,
+   "sliced": true,
+   "copies": 2,
+   "bed": 250
+  },
+  {
+   "name": "cell_link",
+   "url": "../stl/cell_link.stl",
+   "option": "cell",
+   "role": "link: arm fork to the load-cell clevis, on the thrust line",
+   "size": [
+    142.0,
+    12.0,
+    5.0
+   ],
+   "grams": 7.15,
+   "minutes": 20.8,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "cell_mast",
+   "url": "../stl/cell_mast.stl",
+   "option": "cell",
+   "role": "load-cell mast: the bar cell's fixed end on its north face",
+   "size": [
+    105.0,
+    90.0,
+    183.0
+   ],
+   "grams": 161.26,
+   "minutes": 390.5,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "cell_clevis",
+   "url": "../stl/cell_clevis.stl",
+   "option": "cell",
+   "role": "load-cell clevis: on the cell's free end, pin on the thrust line",
+   "size": [
+    47.0,
+    20.0,
+    28.0
+   ],
+   "grams": 9.72,
+   "minutes": 33.2,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "cal_mast",
+   "url": "../stl/cal_mast.stl",
+   "option": "cal",
+   "role": "calibration mast at the north edge (remove before running)",
+   "size": [
+    105.0,
+    90.0,
+    204.0
+   ],
+   "grams": 177.99,
+   "minutes": 446.9,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "cal_pulley_bracket",
+   "url": "../stl/cal_pulley_bracket.stl",
+   "option": "cal",
+   "role": "calibration pulley bracket: 608 bearing, groove top on the thrust line",
+   "size": [
+    96.0,
+    60.0,
+    32.0
+   ],
+   "grams": 21.53,
+   "minutes": 62.0,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "cal_wheel",
+   "url": "../stl/cal_wheel.stl",
+   "option": "cal",
+   "role": "calibration pulley tyre on the 608 bearing",
+   "size": [
+    34.2,
+    34.2,
+    7.0
+   ],
+   "grams": 3.26,
+   "minutes": 11.4,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  },
+  {
+   "name": "guy_anchor",
+   "url": "../stl/guy_anchor.stl",
+   "option": "guy",
+   "role": "optional guy-cord anchor (stiffer post; not needed for accuracy)",
+   "size": [
+    60.0,
+    60.0,
+    48.0
+   ],
+   "grams": 24.63,
+   "minutes": 76.5,
+   "sliced": true,
+   "copies": 1,
+   "bed": 250
+  }
+ ],
+ "placements": [
+  {
+   "name": "post_foot",
+   "part": "post_foot",
+   "file": "post_foot",
+   "option": "core",
+   "role": "post foot: the post stands on the board through it",
+   "at": [
+    0.0,
+    -70.0,
+    0.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    -70.0,
+    0.0,
+    1.0
+   ],
+   "burst": [
+    0,
+    -70,
+    0
+   ],
+   "label": "post foot"
+  },
+  {
+   "name": "pivot_head",
+   "part": "pivot_head",
+   "file": "pivot_head",
+   "option": "core",
+   "role": "pivot head: caps the post, carries the axle over the arm, stops the swing at ~4 deg",
+   "at": [
+    0.0,
+    0.0,
+    700.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -1.0,
+    0.0,
+    0.0,
+    -29.0,
+    738.0,
+    1.0
+   ],
+   "burst": [
+    0,
+    -35,
+    230
+   ],
+   "label": "pivot head"
+  },
+  {
+   "name": "arm_hub",
+   "part": "arm_hub",
+   "file": "arm_hub",
+   "option": "core",
+   "role": "arm hub: pinned to the axle and the arm, swings between the cheeks",
+   "at": [
+    0.0,
+    0.0,
+    652.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    652.0,
+    1.0
+   ],
+   "burst": [
+    0,
+    0,
+    150
+   ],
+   "label": "arm hub"
+  },
+  {
+   "name": "motor_clamp",
+   "part": "motor_clamp",
+   "file": "motor_clamp",
+   "option": "core",
+   "role": "motor clamp: arm end, motor plate on the front, link fork on the back",
+   "at": [
+    0.0,
+    0.0,
+    220.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    -8.0,
+    0.0,
+    190.0,
+    1.0
+   ],
+   "burst": [
+    0,
+    0,
+    0
+   ],
+   "label": "motor clamp + link fork"
+  },
+  {
+   "name": "motor_plate",
+   "part": "motor_plate",
+   "file": "motor_plate",
+   "option": "core",
+   "role": "motor plate: 19x19 and 16/19-cross patterns, M3 heads recessed",
+   "at": [
+    30.0,
+    0.0,
+    220.0
+   ],
+   "matrix": [
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    -1.0,
+    0.0,
+    0.0,
+    0.0,
+    38.0,
+    0.0,
+    220.0,
+    1.0
+   ],
+   "burst": [
+    70,
+    0,
+    0
+   ],
+   "label": "motor plate"
+  },
+  {
+   "name": "crank_link",
+   "part": "crank_link",
+   "file": "crank_link",
+   "option": "bench",
+   "role": "link: arm fork to the crank, on the thrust line",
+   "at": [
+    -186.5,
+    0.0,
+    220.0
+   ],
+   "matrix": [
+    0.707107,
+    0.0,
+    0.707107,
+    0.0,
+    0.707107,
+    0.0,
+    -0.707107,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    -186.5,
+    -2.5,
+    220.0,
+    1.0
+   ],
+   "burst": [
+    0,
+    0,
+    170
+   ],
+   "label": "link (on the thrust line)"
+  },
+  {
+   "name": "crank",
+   "part": "crank",
+   "file": "crank",
+   "option": "bench",
+   "role": "bell crank, equal arms: the link's pull presses the anvil on the scale 1:1",
+   "at": [
+    -333.0,
+    0.0,
+    32.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    -244.499099,
+    -8.0,
+    122.5,
+    1.0
+   ],
+   "burst": [
+    0,
+    0,
+    70
+   ],
+   "label": "bell crank (1:1)"
+  },
+  {
+   "name": "crank_spacer",
+   "part": "crank_spacer",
+   "file": "crank_spacer",
+   "option": "bench",
+   "role": "spacer between the crank bearings' inner races",
+   "at": [
+    -333.0,
+    0.0,
+    32.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    -333.0,
+    -1.0,
+    32.0,
+    1.0
+   ],
+   "burst": [
+    0,
+    0,
+    70
+   ],
+   "label": null
+  },
+  {
+   "name": "crank_base",
+   "part": "crank_base",
+   "file": "crank_base",
+   "option": "bench",
+   "role": "crank base: holds the crank's axle at the nose's height; slots set the arm plumb",
+   "at": [
+    -333.0,
+    0.0,
+    0.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    -333.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "burst": [
+    0,
+    0,
+    0
+   ],
+   "label": "crank base"
+  },
+  {
+   "name": "scale_anvil",
+   "part": "scale_anvil",
+   "file": "scale_anvil",
+   "option": "bench",
+   "role": "anvil on the platform's centre: lifts the contact to the crank's pivot height",
+   "at": [
+    -145.0,
+    0.0,
+    17.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    -145.0,
+    0.0,
+    17.0,
+    1.0
+   ],
+   "burst": [
+    0,
+    0,
+    35
+   ],
+   "label": "anvil"
+  },
+  {
+   "name": "scale_corner_1",
+   "part": "scale_corner",
+   "file": "scale_corner",
+   "option": "bench",
+   "role": "corner stop: the scale goes back to the same place after weighing parts",
+   "at": [
+    -198.5,
+    -77.0,
+    0.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    -183.5,
+    -62.0,
+    0.0,
+    1.0
+   ],
+   "burst": [
+    -40,
+    0,
+    0
+   ],
+   "label": "corner stops"
+  },
+  {
+   "name": "scale_corner_2",
+   "part": "scale_corner",
+   "file": "scale_corner",
+   "option": "bench",
+   "role": "corner stop: the scale goes back to the same place after weighing parts",
+   "at": [
+    -198.5,
+    52.0,
+    0.0,
+    -90.0
+   ],
+   "matrix": [
+    0.0,
+    -1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    -183.5,
+    37.0,
+    0.0,
+    1.0
+   ],
+   "burst": [
+    -40,
+    0,
+    0
+   ],
+   "label": null
+  },
+  {
+   "name": "cell_link",
+   "part": "cell_link",
+   "file": "cell_link",
+   "option": "cell",
+   "role": "link: arm fork to the load-cell clevis, on the thrust line",
+   "at": [
+    -105.0,
+    0.0,
+    220.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    -105.0,
+    -2.5,
+    220.0,
+    1.0
+   ],
+   "burst": [
+    -80,
+    0,
+    0
+   ],
+   "label": "link (on the thrust line)"
+  },
+  {
+   "name": "cell_mast",
+   "part": "cell_mast",
+   "file": "cell_mast",
+   "option": "cell",
+   "role": "load-cell mast: the bar cell's fixed end on its north face",
+   "at": [
+    -221.7,
+    0.0,
+    0.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    -229.2,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "burst": [
+    -170,
+    0,
+    0
+   ],
+   "label": "load-cell mast"
+  },
+  {
+   "name": "cell_clevis",
+   "part": "cell_clevis",
+   "file": "cell_clevis",
+   "option": "cell",
+   "role": "load-cell clevis: on the cell's free end, pin on the thrust line",
+   "at": [
+    -170.0,
+    0.0,
+    220.0
+   ],
+   "matrix": [
+    0.0,
+    0.0,
+    -1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    -192.0,
+    0.0,
+    205.5,
+    1.0
+   ],
+   "burst": [
+    -110,
+    0,
+    0
+   ],
+   "label": "cell clevis"
+  },
+  {
+   "name": "cal_mast",
+   "part": "cal_mast",
+   "file": "cal_mast",
+   "option": "cal",
+   "role": "calibration mast at the north edge (remove before running)",
+   "at": [
+    175.0,
+    0.0,
+    0.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    167.5,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "burst": [
+    150,
+    0,
+    0
+   ],
+   "label": "calibration mast"
+  },
+  {
+   "name": "cal_pulley_bracket",
+   "part": "cal_pulley_bracket",
+   "file": "cal_pulley_bracket",
+   "option": "cal",
+   "role": "calibration pulley bracket: 608 bearing, groove top on the thrust line",
+   "at": [
+    175.0,
+    0.0,
+    204.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -1.0,
+    0.0,
+    193.0,
+    0.0,
+    210.0,
+    1.0
+   ],
+   "burst": [
+    150,
+    0,
+    70
+   ],
+   "label": null
+  },
+  {
+   "name": "cal_wheel",
+   "part": "cal_wheel",
+   "file": "cal_wheel",
+   "option": "cal",
+   "role": "calibration pulley tyre on the 608 bearing",
+   "at": [
+    225.0,
+    0.0,
+    206.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    225.0,
+    -3.5,
+    206.0,
+    1.0
+   ],
+   "burst": [
+    150,
+    60,
+    100
+   ],
+   "label": "608 pulley"
+  },
+  {
+   "name": "guy_anchor",
+   "part": "guy_anchor",
+   "file": "guy_anchor",
+   "option": "guy",
+   "role": "optional guy-cord anchor (stiffer post; not needed for accuracy)",
+   "at": [
+    -420.0,
+    -70.0,
+    0.0
+   ],
+   "matrix": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    -420.0,
+    -70.0,
+    0.0,
+    1.0
+   ],
+   "burst": [
+    -60,
+    -60,
+    0
+   ],
+   "label": "guy anchor (optional)"
+  }
+ ],
+ "tubes": [
+  {
+   "name": "post",
+   "a": [
+    0,
+    -70.0,
+    0
+   ],
+   "b": [
+    0,
+    -70.0,
+    728.0
+   ],
+   "od": 25.4,
+   "option": "core",
+   "role": "post: 25.4 mm tube, cut 728 mm",
+   "burst": [
+    0,
+    -70,
+    90
+   ],
+   "label": "post (25.4 tube)"
+  },
+  {
+   "name": "arm",
+   "a": [
+    0,
+    0,
+    182.0
+   ],
+   "b": [
+    0,
+    0,
+    682.0
+   ],
+   "od": 25.4,
+   "option": "core",
+   "role": "pendulum arm: 25.4 mm tube, cut 500 mm",
+   "burst": [
+    0,
+    0,
+    75
+   ],
+   "label": "pendulum arm (25.4 tube)"
+  },
+  {
+   "name": "axle",
+   "a": [
+    0,
+    -42.0,
+    700.0
+   ],
+   "b": [
+    0,
+    38.0,
+    700.0
+   ],
+   "od": 14.66,
+   "option": "core",
+   "role": "pivot axle: 14.66 mm tube, cut 80 mm",
+   "burst": [
+    0,
+    150,
+    150
+   ],
+   "label": "pivot axle (14.66 tube)"
+  }
+ ],
+ "bolts": [
+  {
+   "name": "foot_bolt",
+   "size": "M5",
+   "d": 5.0,
+   "length": 80,
+   "p0": [
+    0.0,
+    -106.0,
+    29.0
+   ],
+   "u": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "stack": 70.0,
+   "nut": true,
+   "into": null,
+   "option": "core",
+   "role": "M5x80 through post_foot and the post",
+   "washers": [
+    1,
+    1
+   ],
+   "head": [
+    8.5,
+    5.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    8.0,
+    4.0
+   ],
+   "parent": "post_foot",
+   "burst": [
+    0.0,
+    -115.0,
+    0.0
+   ],
+   "nut_burst": [
+    0.0,
+    -35.0,
+    0.0
+   ]
+  },
+  {
+   "name": "head_post_bolt",
+   "size": "M5",
+   "d": 5.0,
+   "length": 60,
+   "p0": [
+    -26.0,
+    -70.0,
+    700.0
+   ],
+   "u": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "stack": 50.0,
+   "nut": true,
+   "into": null,
+   "option": "core",
+   "role": "M5x60 through pivot_head and the post",
+   "washers": [
+    1,
+    1
+   ],
+   "head": [
+    8.5,
+    5.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    8.0,
+    4.0
+   ],
+   "parent": "pivot_head",
+   "burst": [
+    -45.0,
+    -35.0,
+    230.0
+   ],
+   "nut_burst": [
+    35.0,
+    -35.0,
+    230.0
+   ]
+  },
+  {
+   "name": "hub_axle_bolt",
+   "size": "M5",
+   "d": 5.0,
+   "length": 70,
+   "p0": [
+    -31.0,
+    0.0,
+    700.0
+   ],
+   "u": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "stack": 60.0,
+   "nut": true,
+   "into": null,
+   "option": "core",
+   "role": "M5x70 through arm_hub and the axle",
+   "washers": [
+    1,
+    1
+   ],
+   "head": [
+    8.5,
+    5.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    8.0,
+    4.0
+   ],
+   "parent": "arm_hub",
+   "burst": [
+    -45.0,
+    0.0,
+    150.0
+   ],
+   "nut_burst": [
+    35.0,
+    0.0,
+    150.0
+   ]
+  },
+  {
+   "name": "hub_arm_bolt",
+   "size": "M5",
+   "d": 5.0,
+   "length": 70,
+   "p0": [
+    -31.0,
+    0.0,
+    667.0
+   ],
+   "u": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "stack": 60.0,
+   "nut": true,
+   "into": null,
+   "option": "core",
+   "role": "M5x70 through arm_hub and the arm",
+   "washers": [
+    1,
+    1
+   ],
+   "head": [
+    8.5,
+    5.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    8.0,
+    4.0
+   ],
+   "parent": "arm_hub",
+   "burst": [
+    -45.0,
+    0.0,
+    150.0
+   ],
+   "nut_burst": [
+    35.0,
+    0.0,
+    150.0
+   ]
+  },
+  {
+   "name": "clamp_bolt",
+   "size": "M5",
+   "d": 5.0,
+   "length": 60,
+   "p0": [
+    0.0,
+    -26.0,
+    220.0
+   ],
+   "u": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "stack": 50.0,
+   "nut": true,
+   "into": null,
+   "option": "core",
+   "role": "M5x60 through motor_clamp and the arm (sideways, clear of the motor)",
+   "washers": [
+    1,
+    1
+   ],
+   "head": [
+    8.5,
+    5.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    8.0,
+    4.0
+   ],
+   "parent": "motor_clamp",
+   "burst": [
+    0.0,
+    -45.0,
+    0.0
+   ],
+   "nut_burst": [
+    0.0,
+    35.0,
+    0.0
+   ]
+  },
+  {
+   "name": "plate_bolt_upper",
+   "size": "M4",
+   "d": 4.0,
+   "length": 20,
+   "p0": [
+    38.0,
+    0.0,
+    243.0
+   ],
+   "u": [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   "stack": 14.0,
+   "nut": true,
+   "into": null,
+   "option": "core",
+   "role": "M4x20 motor plate to clamp, nut in its side slot",
+   "washers": [
+    0.0,
+    0.0
+   ],
+   "head": [
+    7.0,
+    4.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    7.0,
+    3.2
+   ],
+   "parent": "motor_plate",
+   "burst": [
+    115.0,
+    0.0,
+    0.0
+   ],
+   "nut_burst": [
+    35.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "plate_bolt_lower",
+   "size": "M4",
+   "d": 4.0,
+   "length": 20,
+   "p0": [
+    38.0,
+    0.0,
+    197.0
+   ],
+   "u": [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   "stack": 14.0,
+   "nut": true,
+   "into": null,
+   "option": "core",
+   "role": "M4x20 motor plate to clamp, nut in its side slot",
+   "washers": [
+    0.0,
+    0.0
+   ],
+   "head": [
+    7.0,
+    4.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    7.0,
+    3.2
+   ],
+   "parent": "motor_plate",
+   "burst": [
+    115.0,
+    0.0,
+    0.0
+   ],
+   "nut_burst": [
+    35.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "motor_screw_1",
+   "size": "M3",
+   "d": 3.0,
+   "length": 8,
+   "p0": [
+    34.0,
+    9.5,
+    229.5
+   ],
+   "u": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "stack": 4.0,
+   "nut": false,
+   "into": "motor",
+   "option": "core",
+   "role": "M3x8 motor screw (19x19), head in its counterbore",
+   "washers": [
+    0.0,
+    0.0
+   ],
+   "head": [
+    5.5,
+    3.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    5.5,
+    4.0
+   ],
+   "parent": "motor_plate",
+   "burst": [
+    25.0,
+    0.0,
+    0.0
+   ],
+   "nut_burst": [
+    105.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "motor_screw_2",
+   "size": "M3",
+   "d": 3.0,
+   "length": 8,
+   "p0": [
+    34.0,
+    -9.5,
+    229.5
+   ],
+   "u": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "stack": 4.0,
+   "nut": false,
+   "into": "motor",
+   "option": "core",
+   "role": "M3x8 motor screw (19x19), head in its counterbore",
+   "washers": [
+    0.0,
+    0.0
+   ],
+   "head": [
+    5.5,
+    3.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    5.5,
+    4.0
+   ],
+   "parent": "motor_plate",
+   "burst": [
+    25.0,
+    0.0,
+    0.0
+   ],
+   "nut_burst": [
+    105.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "motor_screw_3",
+   "size": "M3",
+   "d": 3.0,
+   "length": 8,
+   "p0": [
+    34.0,
+    -9.5,
+    210.5
+   ],
+   "u": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "stack": 4.0,
+   "nut": false,
+   "into": "motor",
+   "option": "core",
+   "role": "M3x8 motor screw (19x19), head in its counterbore",
+   "washers": [
+    0.0,
+    0.0
+   ],
+   "head": [
+    5.5,
+    3.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    5.5,
+    4.0
+   ],
+   "parent": "motor_plate",
+   "burst": [
+    25.0,
+    0.0,
+    0.0
+   ],
+   "nut_burst": [
+    105.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "motor_screw_4",
+   "size": "M3",
+   "d": 3.0,
+   "length": 8,
+   "p0": [
+    34.0,
+    9.5,
+    210.5
+   ],
+   "u": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "stack": 4.0,
+   "nut": false,
+   "into": "motor",
+   "option": "core",
+   "role": "M3x8 motor screw (19x19), head in its counterbore",
+   "washers": [
+    0.0,
+    0.0
+   ],
+   "head": [
+    5.5,
+    3.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    5.5,
+    4.0
+   ],
+   "parent": "motor_plate",
+   "burst": [
+    25.0,
+    0.0,
+    0.0
+   ],
+   "nut_burst": [
+    105.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "link_pin",
+   "size": "M3",
+   "d": 3.0,
+   "length": 20,
+   "p0": [
+    -40.0,
+    -7.3,
+    220.0
+   ],
+   "u": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "stack": 13.6,
+   "nut": true,
+   "into": null,
+   "option": "core",
+   "role": "M3x20 + nyloc: link pin in the clamp fork",
+   "washers": [
+    0.5,
+    0.5
+   ],
+   "head": [
+    5.5,
+    3.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    5.5,
+    4.0
+   ],
+   "parent": "motor_clamp",
+   "burst": [
+    0.0,
+    -45.0,
+    0.0
+   ],
+   "nut_burst": [
+    0.0,
+    35.0,
+    0.0
+   ]
+  },
+  {
+   "name": "crank_pin",
+   "size": "M3",
+   "d": 3.0,
+   "length": 20,
+   "p0": [
+    -333.0,
+    -8.5,
+    220.0
+   ],
+   "u": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "stack": 10.5,
+   "nut": true,
+   "into": null,
+   "option": "bench",
+   "role": "M3x20 + nyloc: link pin beside the crank's tab",
+   "washers": [
+    0.5,
+    0.5
+   ],
+   "head": [
+    5.5,
+    3.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    5.5,
+    4.0
+   ],
+   "parent": "crank",
+   "burst": [
+    0.0,
+    -45.0,
+    70.0
+   ],
+   "nut_burst": [
+    0.0,
+    35.0,
+    70.0
+   ]
+  },
+  {
+   "name": "crank_axle",
+   "size": "M8",
+   "d": 8.0,
+   "length": 45,
+   "p0": [
+    -333.0,
+    -18.6,
+    32.0
+   ],
+   "u": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "stack": 34.0,
+   "nut": true,
+   "into": null,
+   "option": "bench",
+   "role": "M8x45 + nut: crank axle; clamps the bearings' inner races and the spacer",
+   "washers": [
+    1.6,
+    1.6
+   ],
+   "head": [
+    13.0,
+    8.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    13.0,
+    6.5
+   ],
+   "parent": "crank_base",
+   "burst": [
+    0.0,
+    -45.0,
+    0.0
+   ],
+   "nut_burst": [
+    0.0,
+    35.0,
+    0.0
+   ]
+  },
+  {
+   "name": "cell_fixed_screw_1",
+   "size": "M5",
+   "d": 5.0,
+   "length": 40,
+   "p0": [
+    -237.7,
+    0.0,
+    140.0
+   ],
+   "u": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "stack": 32.0,
+   "nut": false,
+   "into": "load_cell",
+   "option": "cell",
+   "role": "M5x40 through cell_mast into the cell's fixed end (2 mm of washers as spacer)",
+   "washers": [
+    1,
+    0
+   ],
+   "head": [
+    8.5,
+    5.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    8.0,
+    4.0
+   ],
+   "parent": "cell_mast",
+   "burst": [
+    -215.0,
+    0.0,
+    0.0
+   ],
+   "nut_burst": [
+    -135.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "cell_fixed_screw_2",
+   "size": "M5",
+   "d": 5.0,
+   "length": 40,
+   "p0": [
+    -237.7,
+    0.0,
+    155.0
+   ],
+   "u": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "stack": 32.0,
+   "nut": false,
+   "into": "load_cell",
+   "option": "cell",
+   "role": "M5x40 through cell_mast into the cell's fixed end (2 mm of washers as spacer)",
+   "washers": [
+    1,
+    0
+   ],
+   "head": [
+    8.5,
+    5.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    8.0,
+    4.0
+   ],
+   "parent": "cell_mast",
+   "burst": [
+    -215.0,
+    0.0,
+    0.0
+   ],
+   "nut_burst": [
+    -135.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "clevis_screw_1",
+   "size": "M5",
+   "d": 5.0,
+   "length": 12,
+   "p0": [
+    -188.0,
+    0.0,
+    205.0
+   ],
+   "u": [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   "stack": 4.0,
+   "nut": false,
+   "into": "load_cell",
+   "option": "cell",
+   "role": "M5x12 cell_clevis into the cell's free end, head in its counterbore",
+   "washers": [
+    0.0,
+    0.0
+   ],
+   "head": [
+    8.5,
+    5.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    8.0,
+    4.0
+   ],
+   "parent": "cell_clevis",
+   "burst": [
+    -65.0,
+    0.0,
+    0.0
+   ],
+   "nut_burst": [
+    -145.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "clevis_screw_2",
+   "size": "M5",
+   "d": 5.0,
+   "length": 12,
+   "p0": [
+    -188.0,
+    0.0,
+    190.0
+   ],
+   "u": [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   "stack": 4.0,
+   "nut": false,
+   "into": "load_cell",
+   "option": "cell",
+   "role": "M5x12 cell_clevis into the cell's free end, head in its counterbore",
+   "washers": [
+    0.0,
+    0.0
+   ],
+   "head": [
+    8.5,
+    5.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    8.0,
+    4.0
+   ],
+   "parent": "cell_clevis",
+   "burst": [
+    -65.0,
+    0.0,
+    0.0
+   ],
+   "nut_burst": [
+    -145.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "clevis_pin",
+   "size": "M3",
+   "d": 3.0,
+   "length": 20,
+   "p0": [
+    -170.0,
+    -7.3,
+    220.0
+   ],
+   "u": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "stack": 13.6,
+   "nut": true,
+   "into": null,
+   "option": "cell",
+   "role": "M3x20 + nyloc: cell_link pin in the clevis",
+   "washers": [
+    0.5,
+    0.5
+   ],
+   "head": [
+    5.5,
+    3.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    5.5,
+    4.0
+   ],
+   "parent": "cell_clevis",
+   "burst": [
+    -110.0,
+    -45.0,
+    0.0
+   ],
+   "nut_burst": [
+    -110.0,
+    35.0,
+    0.0
+   ]
+  },
+  {
+   "name": "cal_bracket_bolt_s",
+   "size": "M4",
+   "d": 4.0,
+   "length": 16,
+   "p0": [
+    155.0,
+    0.0,
+    210.0
+   ],
+   "u": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "stack": 9.2,
+   "nut": true,
+   "into": null,
+   "option": "cal",
+   "role": "M4x16 pulley bracket to mast flange",
+   "washers": [
+    0.0,
+    0.0
+   ],
+   "head": [
+    7.0,
+    4.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    7.0,
+    3.2
+   ],
+   "parent": "cal_pulley_bracket",
+   "burst": [
+    150.0,
+    0.0,
+    115.0
+   ],
+   "nut_burst": [
+    150.0,
+    0.0,
+    35.0
+   ]
+  },
+  {
+   "name": "cal_bracket_bolt_n",
+   "size": "M4",
+   "d": 4.0,
+   "length": 16,
+   "p0": [
+    195.0,
+    0.0,
+    210.0
+   ],
+   "u": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "stack": 9.2,
+   "nut": true,
+   "into": null,
+   "option": "cal",
+   "role": "M4x16 pulley bracket to mast flange",
+   "washers": [
+    0.0,
+    0.0
+   ],
+   "head": [
+    7.0,
+    4.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    7.0,
+    3.2
+   ],
+   "parent": "cal_pulley_bracket",
+   "burst": [
+    150.0,
+    0.0,
+    115.0
+   ],
+   "nut_burst": [
+    150.0,
+    0.0,
+    35.0
+   ]
+  },
+  {
+   "name": "cal_axle",
+   "size": "M8",
+   "d": 8.0,
+   "length": 30,
+   "p0": [
+    225.0,
+    12.5,
+    206.0
+   ],
+   "u": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "stack": 15.5,
+   "nut": true,
+   "into": null,
+   "option": "cal",
+   "role": "M8x30 + nut: pulley axle through the 608 bearing",
+   "washers": [
+    1,
+    1
+   ],
+   "head": [
+    13.0,
+    8.0
+   ],
+   "csk": false,
+   "nut_dims": [
+    13.0,
+    6.5
+   ],
+   "parent": "cal_wheel",
+   "burst": [
+    150.0,
+    105.0,
+    100.0
+   ],
+   "nut_burst": [
+    150.0,
+    25.0,
+    100.0
+   ]
+  }
+ ],
+ "bought": [
+  {
+   "name": "motor",
+   "kind": "motor",
+   "base": [
+    38.0,
+    0,
+    220.0
+   ],
+   "option": "core",
+   "label": "Emax ECOII 2807 1700KV",
+   "stator": [
+    14.0,
+    6.0
+   ],
+   "bell": [
+    17.0,
+    24.0
+   ],
+   "shaft": 2.5,
+   "prop_at": 37.0,
+   "burst": [
+    150,
+    0,
+    0
+   ],
+   "label_short": "motor"
+  },
+  {
+   "name": "esc",
+   "kind": "box",
+   "size": [
+    8,
+    22,
+    45
+   ],
+   "pos": [
+    -16.9,
+    0,
+    422.5
+   ],
+   "color": "#7a3fb0",
+   "option": "core",
+   "label": "ESC 50 A (zip-tied to the arm, out of the wash)",
+   "burst": [
+    -60,
+    0,
+    75
+   ],
+   "label_short": "ESC"
+  },
+  {
+   "name": "battery",
+   "kind": "box",
+   "size": [
+    155,
+    48,
+    37
+   ],
+   "pos": [
+    -395,
+    125,
+    18.5
+   ],
+   "color": "#e8b923",
+   "option": "core",
+   "label": "4S 5000 mAh LiPo (on the board, never on the arm)",
+   "burst": [
+    0,
+    0,
+    0
+   ],
+   "label_short": "4S LiPo"
+  },
+  {
+   "name": "wattmeter",
+   "kind": "box",
+   "size": [
+    75,
+    40,
+    22
+   ],
+   "pos": [
+    -265,
+    135,
+    11
+   ],
+   "color": "#3a7d44",
+   "option": "core",
+   "label": "wattmeter (V, A, W)",
+   "burst": [
+    0,
+    0,
+    0
+   ],
+   "label_short": "wattmeter"
+  },
+  {
+   "name": "servo_tester",
+   "kind": "box",
+   "size": [
+    50,
+    30,
+    15
+   ],
+   "pos": [
+    -160,
+    150,
+    7.5
+   ],
+   "color": "#2f2f2f",
+   "option": "core",
+   "label": "servo tester (throttle)",
+   "burst": [
+    0,
+    0,
+    0
+   ],
+   "label_short": "servo tester"
+  },
+  {
+   "name": "bench_scale",
+   "kind": "box",
+   "size": [
+    105.0,
+    127.0,
+    16.0
+   ],
+   "pos": [
+    -145.0,
+    -12.5,
+    8.0
+   ],
+   "color": "#2b2f36",
+   "option": "bench",
+   "label": "pocket scale 3000 g x 0.1 g (display at the east end)",
+   "burst": [
+    0,
+    0,
+    0
+   ],
+   "label_short": "0.1 g pocket scale"
+  },
+  {
+   "name": "scale_pan",
+   "kind": "box",
+   "size": [
+    100.0,
+    96.0,
+    1.0
+   ],
+   "pos": [
+    -145.0,
+    0,
+    16.5
+   ],
+   "color": "#c9ced6",
+   "option": "bench",
+   "label": "the scale's stainless platform: the anvil stands on its centre",
+   "burst": [
+    0,
+    0,
+    0
+   ],
+   "label_short": null
+  },
+  {
+   "name": "crank_bearing_1",
+   "kind": "cyl",
+   "r": 11.0,
+   "h": 7.0,
+   "pos": [
+    -333.0,
+    -4.5,
+    32.0
+   ],
+   "axis": [
+    0,
+    1,
+    0
+   ],
+   "color": "#9aa3ad",
+   "option": "bench",
+   "label": "608ZZ bearing (2 in the crank)",
+   "burst": [
+    0,
+    -45,
+    70
+   ],
+   "label_short": null
+  },
+  {
+   "name": "crank_bearing_2",
+   "kind": "cyl",
+   "r": 11.0,
+   "h": 7.0,
+   "pos": [
+    -333.0,
+    4.5,
+    32.0
+   ],
+   "axis": [
+    0,
+    1,
+    0
+   ],
+   "color": "#9aa3ad",
+   "option": "bench",
+   "label": "608ZZ bearing (2 in the crank)",
+   "burst": [
+    0,
+    45,
+    70
+   ],
+   "label_short": null
+  },
+  {
+   "name": "load_cell",
+   "kind": "box",
+   "size": [
+    12.7,
+    12.7,
+    75.0
+   ],
+   "pos": [
+    -198.35,
+    0,
+    172.5
+   ],
+   "color": "#b8bec6",
+   "option": "cell",
+   "label": "5 kg bar load cell",
+   "burst": [
+    -140,
+    0,
+    0
+   ],
+   "label_short": "5 kg bar load cell"
+  },
+  {
+   "name": "hx711",
+   "kind": "box",
+   "size": [
+    34,
+    21,
+    4
+   ],
+   "pos": [
+    -300,
+    -95,
+    2
+   ],
+   "color": "#1f7a3a",
+   "option": "cell",
+   "label": "HX711 amplifier",
+   "burst": [
+    0,
+    0,
+    0
+   ],
+   "label_short": "HX711"
+  },
+  {
+   "name": "arduino",
+   "kind": "box",
+   "size": [
+    45,
+    18,
+    8
+   ],
+   "pos": [
+    -300,
+    -130,
+    4
+   ],
+   "color": "#1c5fa8",
+   "option": "cell",
+   "label": "Arduino Nano (USB to laptop)",
+   "burst": [
+    0,
+    0,
+    0
+   ],
+   "label_short": "Arduino Nano"
+  },
+  {
+   "name": "bearing_608",
+   "kind": "cyl",
+   "r": 11.0,
+   "h": 7.0,
+   "pos": [
+    225.0,
+    0,
+    206.0
+   ],
+   "axis": [
+    0,
+    1,
+    0
+   ],
+   "color": "#9aa3ad",
+   "option": "cal",
+   "label": "608ZZ bearing",
+   "burst": [
+    150,
+    40,
+    100
+   ],
+   "label_short": null
+  }
+ ],
+ "lines": [
+  {
+   "name": "cal_string",
+   "pts": [
+    [
+     79.0,
+     0,
+     220.0
+    ],
+    [
+     225.0,
+     0,
+     220.0
+    ],
+    [
+     239.0,
+     0,
+     206.0
+    ],
+    [
+     239.0,
+     0,
+     -150
+    ]
+   ],
+   "d": 1.2,
+   "color": "#e67e22",
+   "option": "cal",
+   "label": "string from the prop nut over the pulley to the weights",
+   "burst": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "name": "guy_cord",
+   "pts": [
+    [
+     0,
+     -82.7,
+     670.0
+    ],
+    [
+     -393.0,
+     -70.0,
+     35
+    ]
+   ],
+   "d": 2.5,
+   "color": "#566573",
+   "option": "guy",
+   "label": "guy cord (optional)",
+   "burst": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "name": "battery_lead",
+   "pts": [
+    [
+     -318,
+     125,
+     20
+    ],
+    [
+     -302,
+     135,
+     11
+    ]
+   ],
+   "d": 5.0,
+   "color": "#c0392b",
+   "option": "core",
+   "burst": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "name": "esc_lead",
+   "pts": [
+    [
+     -228,
+     135,
+     11
+    ],
+    [
+     -120,
+     110,
+     40
+    ],
+    [
+     -40,
+     40,
+     300
+    ],
+    [
+     -14,
+     8,
+     400
+    ]
+   ],
+   "d": 5.0,
+   "color": "#c0392b",
+   "option": "core",
+   "label": "slack loop: battery lead to the ESC on the arm",
+   "burst": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "name": "motor_leads",
+   "pts": [
+    [
+     -14,
+     8,
+     445
+    ],
+    [
+     -12,
+     14,
+     300
+    ],
+    [
+     10,
+     24,
+     240
+    ],
+    [
+     38,
+     18,
+     226
+    ]
+   ],
+   "d": 3.5,
+   "color": "#2c3e50",
+   "option": "core",
+   "burst": [
+    0,
+    0,
+    75
+   ]
+  }
+ ],
+ "board": {
+  "x0": -480.0,
+  "x1": 220.0,
+  "y0": -200.0,
+  "y1": 200.0,
+  "t": 18.0
+ },
+ "board_screws": [
+  {
+   "at": [
+    -42,
+    -112.0,
+    8.0
+   ],
+   "option": "core",
+   "part": "post_foot"
+  },
+  {
+   "at": [
+    -42,
+    -28.0,
+    8.0
+   ],
+   "option": "core",
+   "part": "post_foot"
+  },
+  {
+   "at": [
+    42,
+    -112.0,
+    8.0
+   ],
+   "option": "core",
+   "part": "post_foot"
+  },
+  {
+   "at": [
+    42,
+    -28.0,
+    8.0
+   ],
+   "option": "core",
+   "part": "post_foot"
+  },
+  {
+   "at": [
+    -221.7,
+    -35,
+    8.0
+   ],
+   "option": "cell",
+   "part": "cell_mast"
+  },
+  {
+   "at": [
+    -221.7,
+    35,
+    8.0
+   ],
+   "option": "cell",
+   "part": "cell_mast"
+  },
+  {
+   "at": [
+    175.0,
+    -35,
+    8.0
+   ],
+   "option": "cal",
+   "part": "cal_mast"
+  },
+  {
+   "at": [
+    175.0,
+    35,
+    8.0
+   ],
+   "option": "cal",
+   "part": "cal_mast"
+  },
+  {
+   "at": [
+    -333.0,
+    -30,
+    8.0
+   ],
+   "option": "bench",
+   "part": "crank_base"
+  },
+  {
+   "at": [
+    -333.0,
+    30,
+    8.0
+   ],
+   "option": "bench",
+   "part": "crank_base"
+  },
+  {
+   "at": [
+    -176.5,
+    -82.0,
+    12.0
+   ],
+   "option": "bench",
+   "part": "scale_corner_1"
+  },
+  {
+   "at": [
+    -203.5,
+    -55.0,
+    12.0
+   ],
+   "option": "bench",
+   "part": "scale_corner_1"
+  },
+  {
+   "at": [
+    -203.5,
+    30.0,
+    12.0
+   ],
+   "option": "bench",
+   "part": "scale_corner_2"
+  },
+  {
+   "at": [
+    -176.5,
+    57.0,
+    12.0
+   ],
+   "option": "bench",
+   "part": "scale_corner_2"
+  },
+  {
+   "at": [
+    -440.0,
+    -70.0,
+    8.0
+   ],
+   "option": "guy",
+   "part": "guy_anchor"
+  },
+  {
+   "at": [
+    -400.0,
+    -70.0,
+    8.0
+   ],
+   "option": "guy",
+   "part": "guy_anchor"
+  }
+ ],
+ "layout": {
+  "z_shaft": 220.0,
+  "z_pivot": 700.0,
+  "post_y": -70.0,
+  "pin_x": -40.0,
+  "x_hook": -170.0,
+  "x_plate_front": 38.0,
+  "hub_z0": 652.0,
+  "z_pulley": 206.0,
+  "x_cal": 175.0,
+  "x_crank": -333.0,
+  "x_pan": -145.0,
+  "z_nose": 32.0,
+  "crank_r": 188.0,
+  "x_cell_mast": -221.7,
+  "cell_top": 210.0
+ },
+ "physics": {
+  "pivot": [
+   0,
+   0,
+   700.0
+  ],
+  "prop": [
+   79.0,
+   0,
+   220.0
+  ],
+  "pin": [
+   -40.0,
+   0,
+   220.0
+  ],
+  "hook": [
+   -170.0,
+   0,
+   220.0
+  ],
+  "crank": {
+   "axle": [
+    -333.0,
+    0,
+    32.0
+   ],
+   "pin": [
+    -333.0,
+    0,
+    220.0
+   ],
+   "nose": [
+    -145.0,
+    0,
+    32.0
+   ],
+   "r": 188.0
+  },
+  "ratio": 1.0,
+  "lever": 480.0,
+  "stop_deg": 3.92
+ },
+ "pendulum": [
+  "arm_hub",
+  "arm",
+  "axle",
+  "motor_clamp",
+  "motor_plate",
+  "motor",
+  "esc",
+  "hub_axle_bolt",
+  "hub_arm_bolt",
+  "clamp_bolt",
+  "plate_bolt_upper",
+  "plate_bolt_lower",
+  "motor_screw_1",
+  "motor_screw_2",
+  "motor_screw_3",
+  "motor_screw_4",
+  "link_pin",
+  "motor_leads"
+ ],
+ "labels": {
+  "pivot_head": "pivot head",
+  "arm_hub": "arm hub",
+  "axle": "pivot axle (14.66 tube)",
+  "post": "post (25.4 tube)",
+  "arm": "pendulum arm (25.4 tube)",
+  "motor_clamp": "motor clamp + link fork",
+  "motor_plate": "motor plate",
+  "motor": "motor",
+  "crank_link": "link (on the thrust line)",
+  "crank": "bell crank (1:1)",
+  "crank_base": "crank base",
+  "bench_scale": "0.1 g pocket scale",
+  "scale_anvil": "anvil",
+  "scale_corner_1": "corner stops",
+  "cell_link": "link (on the thrust line)",
+  "cell_mast": "load-cell mast",
+  "load_cell": "5 kg bar load cell",
+  "cell_clevis": "cell clevis",
+  "battery": "4S LiPo",
+  "wattmeter": "wattmeter",
+  "esc": "ESC",
+  "servo_tester": "servo tester",
+  "hx711": "HX711",
+  "arduino": "Arduino Nano",
+  "cal_wheel": "608 pulley",
+  "cal_mast": "calibration mast",
+  "post_foot": "post foot",
+  "guy_anchor": "guy anchor (optional)"
+ },
+ "props": [
+  7,
+  8,
+  10
+ ],
+ "v0": {
+  "parts": [
+   {
+    "name": "post_foot",
+    "url": "../v0_archive/stl/post_foot.stl",
+    "pos": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "name": "pivot_clevis",
+    "url": "../v0_archive/stl/pivot_clevis.stl",
+    "pos": [
+     0,
+     0,
+     635
+    ]
+   },
+   {
+    "name": "arm_hub",
+    "url": "../v0_archive/stl/arm_hub.stl",
+    "pos": [
+     0,
+     0,
+     652
+    ]
+   },
+   {
+    "name": "motor_clamp",
+    "url": "../v0_archive/stl/motor_clamp.stl",
+    "pos": [
+     0,
+     0,
+     220
+    ]
+   },
+   {
+    "name": "motor_plate_2807",
+    "url": "../v0_archive/stl/motor_plate_2807.stl",
+    "pos": [
+     32,
+     0,
+     220
+    ]
+   },
+   {
+    "name": "scale_mast",
+    "url": "../v0_archive/stl/scale_mast.stl",
+    "pos": [
+     -230,
+     30,
+     0
+    ]
+   },
+   {
+    "name": "scale_platform",
+    "url": "../v0_archive/stl/scale_platform.stl",
+    "pos": [
+     -230,
+     30,
+     204
+    ]
+   },
+   {
+    "name": "scale_link",
+    "url": "../v0_archive/stl/scale_link.stl",
+    "pos": [
+     -107,
+     30,
+     222
+    ]
+   },
+   {
+    "name": "brace_clamp",
+    "url": "../v0_archive/stl/brace_clamp.stl",
+    "pos": [
+     0,
+     0,
+     350
+    ]
+   },
+   {
+    "name": "brace_foot",
+    "url": "../v0_archive/stl/brace_foot.stl",
+    "pos": [
+     -350,
+     0,
+     0
+    ]
+   }
+  ],
+  "tubes": [
+   {
+    "name": "post",
+    "a": [
+     0,
+     0,
+     0
+    ],
+    "b": [
+     0,
+     0,
+     635
+    ],
+    "od": 25.4
+   },
+   {
+    "name": "arm",
+    "a": [
+     0,
+     0,
+     182
+    ],
+    "b": [
+     0,
+     0,
+     682
+    ],
+    "od": 25.4
+   },
+   {
+    "name": "axle",
+    "a": [
+     0,
+     -55,
+     700
+    ],
+    "b": [
+     0,
+     55,
+     700
+    ],
+    "od": 14.66
+   },
+   {
+    "name": "brace",
+    "a": [
+     -25.25,
+     0,
+     349.75
+    ],
+    "b": [
+     -375.0,
+     0,
+     0.0
+    ],
+    "od": 14.66
+   }
+  ],
+  "clashes": [
+   {
+    "key": "arm_post",
+    "label": "arm and post are the same cylinder from z 182 to 635: the pendulum cannot hang",
+    "volume": 229538,
+    "url": "../v0_archive/audit/clash_arm_post.stl"
+   },
+   {
+    "key": "arm_clevis",
+    "label": "arm runs into the pivot clevis's socket block",
+    "volume": 5067,
+    "url": "../v0_archive/audit/clash_arm_clevis.stl"
+   },
+   {
+    "key": "bolt_motor",
+    "label": "motor clamp's M5 cross-bolt and nut end in the motor",
+    "volume": 118,
+    "url": "../v0_archive/audit/clash_bolt_motor.stl"
+   },
+   {
+    "key": "screws_plate",
+    "label": "2807 screws (19x19) miss the plate's 19 mm-circle holes",
+    "volume": 113,
+    "url": "../v0_archive/audit/clash_screws_plate.stl"
+   },
+   {
+    "key": "heads_clamp",
+    "label": "M3 screw heads have no room between the plate and the clamp",
+    "volume": 285,
+    "url": "../v0_archive/audit/clash_heads_clamp.stl"
+   },
+   {
+    "key": "brace_foot",
+    "label": "brace tube on the clamp socket's axis misses the foot's socket",
+    "volume": 11644,
+    "url": "../v0_archive/audit/clash_brace_foot.stl"
+   }
+  ],
+  "numbers": {
+   "grips_post": [
+    "motor_clamp",
+    "brace_clamp"
+   ],
+   "pin_height": 224.0,
+   "ratio": 1.0084,
+   "ratio_hook_minus10": 1.0183,
+   "ratio_hook_plus10": 1.0046,
+   "plate_2807_hole_square": 13.44,
+   "motor_2807_square": 19.0,
+   "plate_2212_holes": "rectangle 16 x 19 (+-8, +-9.5)",
+   "motor_2212_holes": "cross: 16 on one axis, 19 on the other",
+   "hub_swing_deg": 4.1,
+   "post_flex_claim_mm": 52.9,
+   "post_flex_pendulum_mm": 0.44,
+   "yaw_couple_Nm": 0.45,
+   "brace_axis_offset_mm": 17.7,
+   "m6x35_left_mm": 0.8,
+   "flange_overhang_mm": 15.0,
+   "tab_overhang_mm": 18.0,
+   "thin_tube_needed_mm": 605,
+   "nut_wall_mm": 0.0
+  }
+ }
+}
