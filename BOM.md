@@ -12,7 +12,8 @@ scale weighs the VTOL's parts) or **B: a load cell** (logs, reads push and pull)
 
 Sliced with `slicer_profiles/` (PETG, 0.2 mm, 4 walls, 30 % gyroid, no supports anywhere). Mass
 and time are the slicer's, from `gcode/<part>.gcode`. Print orientation is baked into
-`stl/<part>.stl`: slice as is, do not rotate.
+`stl/<part>.stl` and `3mf/<part>.3mf` (slicer projects with these settings): slice as is, do
+not rotate.
 
 | Part | Qty | For | Mass | Time | Notes |
 |---|---|---|---|---|---|

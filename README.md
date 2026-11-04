@@ -128,11 +128,15 @@ pivot head's socket, so the pivot axle ends up 28 mm below the post's top. The m
 
 ## Print
 
-Every part is PETG on the Kobra S1, sliced from `stl/` with `slicer_profiles/` into `gcode/`:
-4 walls, 30 % gyroid, 0.2 mm, no supports anywhere. Orientations are baked in: print the G-code,
-or slice the STLs as they are (for the Kobra X, with its own machine profile). Parts, masses and
-times: `BOM.md`. Print `pivot_head`, `arm_hub` and `motor_clamp` first: they check the 25.8 mm and
-15.0 mm bores against your tubes.
+Every part is PETG on the Kobra S1: 4 walls, 30 % gyroid, 0.2 mm, no supports anywhere. The
+easiest way: open `3mf/<part>.3mf` in Anycubic Slicer Next, slice and send it to the printer. Each
+project holds the part in its print orientation (two copies of `scale_corner`) with the Kobra S1
+printer, the `PETG thrust stand` process and the `PETG @VTOL` filament (255 °C, bed 80 °C, the
+same PETG as the VTOL project). The slicer warns that the 3MF has a customized filament preset:
+click OK, its only custom G-code is two comment lines. `gcode/` has the same parts already sliced,
+and `stl/` the bare meshes (orientation baked in; slice them as they are, for the Kobra X with its
+own machine profile). Parts, masses and times: `BOM.md`. Print `pivot_head`, `arm_hub` and
+`motor_clamp` first: they check the 25.8 mm and 15.0 mm bores against your tubes.
 
 ## Assemble
 
@@ -283,6 +287,7 @@ scripts/build_thrust_stand.py   every dimension and part (build123d), the assemb
 scripts/audit_v0.py             rebuilds v0 from v0_archive/ and measures its clashes -> v0_archive/audit/
 scripts/check_stand.py          the gate: 9 checks, exit code 1 on any failure
 scripts/slice_all.py            Anycubic Slicer Next CLI with the Kobra S1 profiles -> gcode/
+scripts/export_3mf.py           slicer projects with the same settings -> 3mf/ (each re-sliced as a check)
 scripts/make_viewer.py          viewer/manifest.json (parts, matrices, masses, bolts, v0 clashes)
 scripts/make_diagram.py         diagram.png
 scripts/serve_viewer.py         the viewer at :28766; ?capture=1 re-renders renders/*.png and *.gif
