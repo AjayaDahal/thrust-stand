@@ -8,38 +8,39 @@ measuring options, **A: a 0.1 g pocket kitchen scale under a bell crank** (recom
 scale weighs the VTOL's parts) or **B: a load cell** (logs, reads push and pull), and preferably the
 **calibration rig**.
 
-## 1. Printed parts (PETG, Kobra S1)
+## 1. Printed parts (Kobra S1)
 
-Sliced with `slicer_profiles/` (PETG, 0.2 mm, 4 walls, 30 % gyroid, no supports anywhere). Mass
-and time are the slicer's, from `gcode/<part>.gcode`. Print orientation is baked into
-`stl/<part>.stl` and `3mf/<part>.3mf` (slicer projects with these settings): slice as is, do
-not rotate.
+Sliced with `slicer_profiles/` (PETG, 0.2 mm, 4 walls, 30 % gyroid, no supports anywhere) in
+Anycubic Slicer Next 2.0.0.3. Mass and time are the slicer's, from `gcode/<part>.gcode`. Print
+orientation is baked into `stl/<part>.stl` and `3mf/<part>.3mf` (slicer projects with these
+settings): slice as is, do not rotate. `3mf/complete_project.3mf` holds every part on six plates
+and prints the ones marked PLA+ in PLA+ at 15 % instead: they only stand or locate.
 
-| Part | Qty | For | Mass | Time | Notes |
-|---|---|---|---|---|---|
-| `post_foot` | 1 | core | 133.8 g | 5 h 51 min | post stands on the board through it |
-| `pivot_head` | 1 | core | 151.0 g | 6 h 23 min | prints upside down; ream the 15 mm bores until the axle turns freely |
-| `arm_hub` | 1 | core | 99.2 g | 4 h 17 min | 15 mm axle bore, 25.8 mm arm bore with a 45° roof |
-| `motor_clamp` | 1 | core | 92.5 g | 3 h 51 min | link fork on the back; M4 nut slots open on the side away from the post |
-| `motor_plate` | 1 | core | 17.5 g | 51 min | fits 19×19 (ECOII 2807), 16×16 and 16/19-cross (22xx) motors |
-| **Core total** | | | **494 g** | **21 h 12 min** | |
-| `crank` | 1 | A | 111.6 g | 4 h 46 min | prints flat; a 608ZZ presses into each face |
-| `crank_base` | 1 | A | 51.6 g | 2 h 06 min | slotted foot: slide it to set the arm plumb |
-| `crank_link` | 1 | A | 15.2 g | 36 min | 293 mm pin to pin; lies diagonally on the bed |
-| `crank_spacer` | 1 | A | 0.1 g | 5 min | 2 mm ring between the bearings' inner races |
-| `scale_anvil` | 1 | A | 13.9 g | 37 min | 15 mm tall for a 17 mm scale: lifts the contact to the crank's pivot |
-| `scale_corner` | 2 | A | 8.4 g each | 25 min each | corner stops: the scale goes back to the same spot |
-| **Option A total** | | | **209 g** | **9 h 02 min** | |
-| `cell_link` | 1 | B | 7.2 g | 21 min | 130 mm pin to pin |
-| `cell_mast` | 1 | B | 161.3 g | 6 h 30 min | slot takes 55–80 mm bar cells |
-| `cell_clevis` | 1 | B | 9.7 g | 33 min | counterbored for the M5 heads |
-| **Option B total** | | | **178 g** | **7 h 25 min** | |
-| `cal_mast` | 1 | calibration | 178.0 g | 7 h 27 min | at the board's north edge; remove it before running |
-| `cal_pulley_bracket` | 1 | calibration | 21.5 g | 1 h 02 min | |
-| `cal_wheel` | 1 | calibration | 3.3 g | 11 min | press onto the 608 bearing |
-| `guy_anchor` | 1 | optional | 24.6 g | 1 h 16 min | only for a stiffer post; accuracy does not need it |
+| Part | Qty | For | Material | Mass | Time | Notes |
+|---|---|---|---|---|---|---|
+| `post_foot` | 1 | core | PLA+ | 132.3 g | 5 h 25 min | post stands on the board through it |
+| `pivot_head` | 1 | core | PETG | 149.8 g | 5 h 56 min | prints upside down; ream the 15 mm bores until the axle turns freely |
+| `arm_hub` | 1 | core | PETG | 97.5 g | 3 h 55 min | 15 mm axle bore, 25.8 mm arm bore with a 45° roof |
+| `motor_clamp` | 1 | core | PETG | 91.4 g | 3 h 31 min | link fork on the back; M4 nut slots open on the side away from the post |
+| `motor_plate` | 1 | core | PETG | 17.4 g | 44 min | fits 19×19 (ECOII 2807), 16×16 and 16/19-cross (22xx) motors |
+| **Core total** | | | | **488 g** | **19 h 31 min** | |
+| `crank` | 1 | A | PETG | 108.2 g | 4 h 21 min | prints flat; a 608ZZ presses in flush from each face (straight bore since v1.1) |
+| `crank_base` | 1 | A | PLA+ | 50.4 g | 1 h 55 min | slotted foot: slide it to set the arm plumb |
+| `crank_link` | 1 | A | PETG | 14.9 g | 31 min | 293 mm pin to pin; lies diagonally on the bed |
+| `crank_spacer` | 1 | A | PLA+ | 0.1 g | 1 min | 2 mm ring between the bearings' inner races |
+| `scale_anvil` | 1 | A | PLA+ | 13.9 g | 31 min | 15 mm tall for a 17 mm scale: lifts the contact to the crank's pivot |
+| `scale_corner` | 2 | A | PLA+ | 8.3 g each | 21 min each | corner stops: the scale goes back to the same spot |
+| **Option A total** | | | | **204 g** | **8 h 00 min** | |
+| `cell_link` | 1 | B | PETG | 7.0 g | 16 min | 130 mm pin to pin |
+| `cell_mast` | 1 | B | PLA+ | 158.8 g | 6 h 03 min | slot takes 55–80 mm bar cells |
+| `cell_clevis` | 1 | B | PETG | 9.7 g | 28 min | counterbored for the M5 heads |
+| **Option B total** | | | | **175 g** | **6 h 47 min** | |
+| `cal_mast` | 1 | calibration | PLA+ | 175.8 g | 6 h 58 min | at the board's north edge; remove it before running |
+| `cal_pulley_bracket` | 1 | calibration | PLA+ | 20.6 g | 54 min | |
+| `cal_wheel` | 1 | calibration | PLA+ | 3.2 g | 7 min | press onto the 608 bearing |
+| `guy_anchor` | 1 | optional | PETG | 24.0 g | 1 h 10 min | only for a stiffer post; accuracy does not need it (not in the full project) |
 
-With both printers running, the core and one option is about 15 h each. Print `pivot_head`,
+With both printers running, the core and one option is about 14 h each. Print `pivot_head`,
 `arm_hub` and `motor_clamp` first: they show whether your printer's 25.8 mm and 15.0 mm bores fit
 the tubes before the rest is committed.
 

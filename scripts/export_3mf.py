@@ -12,6 +12,7 @@ Run: C:/Users/ajayad/venvs/vtol-venv/Scripts/python.exe scripts/export_3mf.py [p
 import glob
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -79,13 +80,25 @@ def check(name, dst, copies):
             f"(gcode/ {ref:6.1f} g), {cfg['print_settings_id']} / {cfg['filament_settings_id'][0]}")
 
 
+def made_here(path):
+    """True for a project this script wrote: every object in it is the file's own STL."""
+    stem = os.path.basename(path)[:-4]
+    try:
+        with zipfile.ZipFile(path) as z:
+            names = re.findall(r'<object id="\d+">\s*<metadata key="name" value="([^"]*)"',
+                               z.read("Metadata/model_settings.config").decode())
+    except (zipfile.BadZipFile, KeyError):
+        return False
+    return bool(names) and set(names) == {stem + ".stl"}
+
+
 def main(names=None):
     if not os.path.exists(SLICER):
         sys.exit(f"slicer not found: {SLICER} (set STAND_SLICER)")
     os.makedirs(OUT, exist_ok=True)
-    if not names:                                          # projects of parts that no longer exist go
+    if not names:                                          # stale per-part projects go, nothing else
         for old in glob.glob(os.path.join(OUT, "*.3mf")):
-            if os.path.basename(old)[:-4] not in B.FILES:
+            if os.path.basename(old)[:-4] not in B.FILES and made_here(old):
                 os.remove(old)
     for name in names or B.FILES:
         dst, copies = export(name)

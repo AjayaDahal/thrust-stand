@@ -13,10 +13,12 @@ the pivot, cantilever bending, momentum theory for the prop wash), and the READM
 pass marks were checked against the CAD and against the VTOL project (`vtol-plane/DESIGN.md`,
 `scripts/params.py`, `scripts/mass_balance.py`).
 
-## Current status (v1, Nov 3, 2026)
+## Current status (v1.1, Nov 5, 2026)
 
-**Ready to print.** Start with `pivot_head`, `arm_hub` and `motor_clamp`: they take the tubes and
-the bolts, so they confirm the 25.8 mm and 15.0 mm bores on your printer before the rest.
+**Printed and being assembled.** Every part was printed from `3mf/complete_project.3mf` (PETG and
+PLA+); the one defect the print showed, in the crank, is fixed in v1.1 (Round 3). For a new build,
+start with `pivot_head`, `arm_hub` and `motor_clamp`: they take the tubes and the bolts, so they
+confirm the 25.8 mm and 15.0 mm bores on your printer before the rest.
 
 - Gate: `scripts/check_stand.py` passes **9/9**: valid solids that fit the Kobra S1 bed; no
   collision between any two of the 19 placed printed parts, 3 tubes, 22 bolts (head, washers, nut),
@@ -26,10 +28,10 @@ the bolts, so they confirm the 25.8 mm and 15.0 mm bores on your printer before 
   (ratio 1.0000); the crank's arms equal (188.00 / 188.00 mm) with its nose on the anvil at the
   pivot's height (32.00) and the anvil on the scale (17.00); the swing stop at 3.9° both ways with
   the prop still clear; 7, 8 and 10 in prop discs clear of the board, post, masts and crank; no flat
-  ceiling wider than 16 mm in any print.
-- 18 print files sliced for the Kobra S1 (PETG, 4 walls, 30 % gyroid, 0.2 mm; `gcode/`):
-  every build 494 g / 21.2 h; plus the pocket-scale option 209 g / 9.0 h or the load-cell
-  option 178 g / 7.4 h; the calibration rig 203 g / 8.7 h.
+  ceiling wider than 16 mm and no hole wider than 6 mm going up through a ceiling in any print.
+- 18 print files sliced for the Kobra S1 (PETG, 4 walls, 30 % gyroid, 0.2 mm; Anycubic Slicer Next
+  2.0.0.3; `gcode/`): every build 488 g / 19.5 h; plus the pocket-scale option 204 g / 8.0 h or the
+  load-cell option 175 g / 6.8 h; the calibration rig 200 g / 8.0 h.
 - 3-D viewer with the v0 audit mode (`viewer/`), renders and animations (`renders/`), a dimensioned
   diagram (`diagram.png`), `BOM.md` (including the measuring scale), `README.md` (build and test).
 
@@ -47,6 +49,20 @@ the bolts, so they confirm the 25.8 mm and 15.0 mm bores on your printer before 
 6. Calibration with known weights over the pulley (`README.md`, "Calibrate"), and the pocket
    scale's own error against a calibration mass.
 7. The prop-wash bias (finding 1.10): with the load cell, run the same prop tractor and pusher.
+
+## Round 3 — the first print (Nov 5, 2026)
+
+All parts were printed from `3mf/complete_project.3mf`. One defect showed up, in the crank:
+
+<img src="photos/crank_seat_first_print.jpg" alt="The v1 crank's bed-side bearing seat full of strands, and the slicer's layer at 7.2 mm for v1 and v1.1">
+
+| # | Topic | Finding | Change | Status |
+|---|---|---|---|---|
+| 3.1 | print | Strands filled `crank`'s bed-side bearing seat. v1 had a 2 mm shoulder between the two 608 seats with a 14 mm hole in it. The crank prints flat, so the shoulder's first layer (7.2 mm up) lies over the empty bed-side seat: the slicer bridged the ring but laid the hole's four walls on air (Slicer Next 2.0.0.3: 196 mm of overhang wall in that layer; 1.3.3.3: 703 mm and no bridge at all), and they sagged into a web. A bearing stopped short by it stands proud, and the clamped axle then loads its balls. | One straight 22.1 mm bore. Pressed flush with each face, the bearings sit 2 mm apart, the spacer's length, so the axle still clamps only the inner races. A v1 crank needs no reprint: cut the strands out until the bearing goes in flush (`README.md`). | fixed, gated (9) |
+| 3.2 | gate | Check 9 passed that shoulder as an 8.1 mm bridge: it measured a ring by 4 × area / perimeter. A ring around a hole is not a bridge; its inner edge has nothing to anchor to. | Check 9 also follows each ceiling's boundary loops: a loop whose walls all rise from the ceiling is a hole through it, and wider than 6 mm fails. On v1 it fails the crank (14.0 mm at 7.0 mm); on v1.1 it passes, listing `cal_mast`'s 4.5 mm bolt holes over its nut slots. | fixed |
+| 3.3 | slicer | The slicer has a setting for exactly this, "Bridge counterbore holes", off in every profile. "Partially bridged" turns v1's shoulder layer into bridges only, and `cal_mast`'s nut-slot ceilings too (199 mm of overhang wall before). | `process_petg_stand.json`: `counterbore_hole_bridging = partiallybridge`. | fixed |
+| 3.4 | slicer | Anycubic Slicer Next went from 1.3.3.3 to 2.0.0.3 during the build. Its command line now slices for the textured PEI plate, for which `PETG @VTOL` had no temperature: re-running `build_all.py` would have put PETG on a 45 °C bed. | `filament_petg.json`: 80 °C on the textured plate as on the smooth one. Every part re-sliced with 2.0.0.3: the core and each option come out 1–2 % lighter and 8–11 % quicker than 1.3.3.3 made them (`BOM.md`). | fixed |
+| 3.5 | material | Not every part needs PETG: the ones that only stand on the board or locate something carry no load and no heat. | `complete_project.3mf`: PETG at 30 % for the parts that take the thrust, bolts or bearings; PLA+ at 15 % for `post_foot`, `crank_base`, `scale_anvil`, the corner stops, `crank_spacer`, `cell_mast` and the calibration rig. | done |
 
 ## Round 2 — one scale for the stand and the VTOL (Nov 3, 2026)
 

@@ -238,8 +238,10 @@ def cal_mast():
 def crank():
     """Scale option: a bell crank with equal arms turns the link's pull into a press on the anvil
     on the scale, 1:1. Its top tab takes the link at shaft height; its nose (a 5 mm cylinder) rests
-    on the anvil level with the pivot, so the nose rolls instead of sliding. Two 608 bearings
-    in the hub. Prints flat. Local origin: the pivot axis; arms up (+z) and north (+x)."""
+    on the anvil level with the pivot, so the nose rolls instead of sliding. Two 608 bearings press
+    flush into a straight bore, 2 mm apart, the crank_spacer's length. (The first print had a 2 mm
+    shoulder between them: over the bed-side seat its hole's walls printed in mid-air, as strands.)
+    Prints flat. Local origin: the pivot axis; arms up (+z) and north (+x)."""
     r, t, c = CRANK["r"], CRANK["t"] / 2, CRANK["clear"]
     wv, hh = CRANK["w_v"] / 2, CRANK["h_h"]
     p = cyl_y(CRANK["hub"], -t, t)
@@ -251,9 +253,7 @@ def crank():
     p += cyl_y(CRANK["nose"], -t, t, x=r, z=CRANK["nose"])    # lowest point at the pivot's height
     p += gusset(wv + 70, wv - 0.5, c + hh - 0.5, c + hh + 70, -t, t)
     p -= cyl_y(D_M3 / 2, -t - 1, t, z=r)
-    p -= cyl_y(BEARING_SEAT / 2, -t - 1, -1)                   # 608 seats from both faces
-    p -= cyl_y(BEARING_SEAT / 2, 1, t + 1)
-    p -= cyl_y(7.0, -2, 2)                                     # clear of the inner races and spacer
+    p -= cyl_y(BEARING_SEAT / 2, -t - 1, t + 1)
     return p
 
 

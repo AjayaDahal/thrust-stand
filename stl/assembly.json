@@ -47,7 +47,7 @@
    "option": "bench",
    "role": "bell crank, equal arms: the link's pull presses the anvil on the scale 1:1",
    "qty": 1,
-   "volume": 203.8
+   "volume": 203.34
   },
   "crank_spacer": {
    "file": "crank_spacer",

@@ -12,7 +12,8 @@
      a link end 5 mm off
   7  the swing stop: the hub meets the bridge at 3-6 deg, and at the stop the prop still clears
   8  prop discs (7, 8 and 10 in) clear the board, the post and the scale masts
-  9  print orientation: no flat ceiling wider than 16 mm needs bridging or support
+  9  print orientation: no flat ceiling wider than 16 mm needs bridging or support, and no hole
+     wider than 6 mm goes up through a ceiling (the slicer would lay its walls in mid-air)
 
 Run: C:/Users/ajayad/venvs/vtol-venv/Scripts/python.exe scripts/check_stand.py
 """
@@ -341,8 +342,37 @@ def perimeter(tris):
     return sum(np.linalg.norm(np.subtract(a, b)) for (a, b), n in count.items() if n == 1)
 
 
+def edge(a, b):
+    a, b = tuple(np.round(a, 2)), tuple(np.round(b, 2))
+    return (a, b) if a < b else (b, a)
+
+
+def rim_loops(tris, members):
+    """The closed boundary loops of a triangle patch, each as a list of edges."""
+    count = {}
+    for t in members:
+        for i in range(3):
+            k = edge(tris[t][i], tris[t][(i + 1) % 3])
+            count[k] = count.get(k, 0) + 1
+    rim = [k for k, n in count.items() if n == 1]
+    parent = {}
+
+    def find(v):
+        parent.setdefault(v, v)
+        while parent[v] != v:
+            parent[v] = parent[parent[v]]
+            v = parent[v]
+        return v
+    for a, b in rim:
+        parent[find(a)] = find(b)
+    loops = {}
+    for k in rim:
+        loops.setdefault(find(k[0]), []).append(k)
+    return list(loops.values())
+
+
 def check_print():
-    bad, notes = [], []
+    bad, notes, holes = [], [], []
     for name in B.FILES:
         tris = G.read_stl(os.path.join(G.STL, name + ".stl"))
         lo, hi = tris.reshape(-1, 3).min(0), tris.reshape(-1, 3).max(0)
@@ -354,16 +384,35 @@ def check_print():
         nz = n[:, 2] / np.maximum(2 * area, 1e-12)
         zc = tris[:, :, 2].mean(1)
         sel = (nz < -0.98) & (zc > 0.3) & (area > 1e-6)
+        owner = {}
+        for t, tri in enumerate(tris):
+            for i in range(3):
+                owner.setdefault(edge(tri[i], tri[(i + 1) % 3]), []).append(t)
         for g in patches(tris, sel):
             pts = tris[g][:, :, :2].reshape(-1, 2)
             # narrowest extent: the bounding box for strips and plates, 4 area / perimeter for rings
             w = min(np.ptp(pts[:, 0]), np.ptp(pts[:, 1]), 4 * area[g].sum() / max(perimeter(tris[g]), 1e-9))
+            z = zc[g].mean()
             if w > 16.0 and area[g].sum() > 60.0:
-                bad.append(f"{name}: flat ceiling at z {zc[g].mean():.1f}, {area[g].sum():.0f} mm2, {w:.0f} mm wide")
+                bad.append(f"{name}: flat ceiling at z {z:.1f}, {area[g].sum():.0f} mm2, {w:.0f} mm wide")
             elif area[g].sum() > 20.0:
                 notes.append(f"{name} {w:.1f} mm")
+            if area[g].sum() < 5.0:
+                continue
+            # A loop whose walls all rise from the ceiling is a hole through it: its first walls print in mid-air.
+            members = set(np.flatnonzero(g).tolist())
+            for loop in rim_loops(tris, members):
+                walls = [t for k in loop for t in owner[k] if t not in members]
+                if walls and sum(zc[t] > z for t in walls) >= 0.9 * len(walls):
+                    ends = np.array([p for k in loop for p in k])
+                    d = max(np.ptp(ends[:, 0]), np.ptp(ends[:, 1]))
+                    if d > 6.0:
+                        bad.append(f"{name}: {d:.1f} mm hole up through a ceiling at z {z:.1f}")
+                    else:
+                        holes.append(f"{name} {d:.1f} mm")
     check("1+9 parts fit the bed and print without supports", not bad,
-          f"{len(B.FILES)} files; bridges: {', '.join(sorted(set(notes)))}" if not bad else "; ".join(bad))
+          f"{len(B.FILES)} files; bridges: {', '.join(sorted(set(notes)))}; small holes through a bridge "
+          f"(a bolt clears them): {', '.join(sorted(set(holes))) or 'none'}" if not bad else "; ".join(bad))
 
 
 def info(parts):

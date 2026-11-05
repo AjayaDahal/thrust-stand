@@ -7,7 +7,7 @@
 ### Hang the motor on a pendulum, hold it back on the thrust line, and read the thrust 1:1 on a 0.1 g kitchen scale
 
 ![CAD](https://img.shields.io/badge/CAD-Python%20%2B%20build123d-3776ab?logo=python&logoColor=white)
-![Printed](https://img.shields.io/badge/printed-PETG-e36209)
+![Printed](https://img.shields.io/badge/printed-PETG%20%2B%20PLA-e36209)
 ![Scale](https://img.shields.io/badge/scale-3000%20g%20%C3%97%200.1%20g-2ea44f)
 ![Props](https://img.shields.io/badge/props-7%E2%80%9310%20in-2ea44f)
 
@@ -17,7 +17,7 @@
 </div>
 
 Built for the VTOL project's motors (Emax ECOII 2807 1700KV, 7 in props) and for any 22xx/28xx
-motor, from two 25.4 mm tubes and one 14.66 mm tube you already have, PETG parts, and either a
+motor, from two 25.4 mm tubes and one 14.66 mm tube you already have, PETG and PLA parts, and either a
 **0.1 g pocket kitchen scale** (YONCON 3000 g / 0.1 g; the same one weighs the VTOL's parts: see
 "Weigh the VTOL's parts") or a 5 kg load cell.
 
@@ -31,6 +31,9 @@ quantifies the last (the prop wash's bias), with a way to measure it. A second r
 draft's luggage scale with a 0.1 g kitchen scale on a bell crank. `REPORT.md` has every finding
 with its numbers; the viewer's "v0 draft as audited" mode shows the draft's clashes in red.
 
+**v1.1** is v1 after its first print (Nov 2026): the crank's bearing bore is straight through now,
+and the gate catches the overhang that spoiled it ("Lessons from the first print").
+
 ## At a glance
 
 | | |
@@ -40,7 +43,7 @@ with its numbers; the viewer's "v0 draft as audited" mode shows the draft's clas
 | **Props** | 7 in (the VTOL's) to 10 in: the shaft is 220 mm above the board |
 | **Error budget** | geometry ≤ 0.5 % (link end ±5 mm), pivot friction ≤ 2 g, crank bearings < 0.1 g, gravity < 1 g; the scale itself dominates |
 | **Scale options** | A: 0.1 g pocket kitchen scale + bell crank (recommended; also weighs the VTOL's parts) · B: 5 kg bar load cell + HX711 + Arduino (logs, reads push and pull) |
-| **Printed** | 5 core parts, 494 g, 21.2 h on the Kobra S1, + 209 g (A) or 178 g (B) |
+| **Printed** | 5 core parts, 488 g, 19.5 h on the Kobra S1 (all PETG), + 204 g (A) or 175 g (B) |
 | **Checked** | `scripts/check_stand.py`: 9/9 (collisions, bolts, nut walls, motor patterns, 1:1 geometry incl. the crank, swing stop, prop clearance, printability) |
 
 ## See it
@@ -128,15 +131,40 @@ pivot head's socket, so the pivot axle ends up 28 mm below the post's top. The m
 
 ## Print
 
-Every part is PETG on the Kobra S1: 4 walls, 30 % gyroid, 0.2 mm, no supports anywhere. The
-easiest way: open `3mf/<part>.3mf` in Anycubic Slicer Next, slice and send it to the printer. Each
-project holds the part in its print orientation (two copies of `scale_corner`) with the Kobra S1
-printer, the `PETG thrust stand` process and the `PETG @VTOL` filament (255 °C, bed 80 °C, the
-same PETG as the VTOL project). The slicer warns that the 3MF has a customized filament preset:
-click OK, its only custom G-code is two comment lines. `gcode/` has the same parts already sliced,
-and `stl/` the bare meshes (orientation baked in; slice them as they are, for the Kobra X with its
-own machine profile). Parts, masses and times: `BOM.md`. Print `pivot_head`, `arm_hub` and
-`motor_clamp` first: they check the 25.8 mm and 15.0 mm bores against your tubes.
+**All of it in one go:** `3mf/complete_project.3mf`, the project the first stand was printed from,
+holds every part on six Kobra S1 plates. The plates named PETG 1–3 (filament 1, 30 % gyroid) carry
+the parts that take the thrust, the bolts or the bearings: `pivot_head`, `arm_hub`, `motor_clamp`,
+`motor_plate`, `crank`, `cell_clevis` and both links. The plates named PLA 1–3 (filament 2,
+Anycubic PLA+, 15 %) carry the parts that only stand or locate: `post_foot`, `crank_base`,
+`scale_anvil`, the corner stops, `crank_spacer`, `cell_mast` and the calibration rig. 4 walls,
+0.2 mm, no supports. Map the two filaments to your spools when you send a plate; with the pocket
+scale, leave out `cell_mast`, `cell_clevis` and `cell_link`.
+
+**One part at a time, all PETG:** open `3mf/<part>.3mf` in Anycubic Slicer Next, slice and send it
+to the printer. Each project holds the part in its print orientation (two copies of `scale_corner`)
+with the Kobra S1 printer, the `PETG thrust stand` process and the `PETG @VTOL` filament (255 °C,
+bed 80 °C, the same PETG as the VTOL project). The slicer warns that the 3MF has a customized
+filament preset: click OK, its only custom G-code is two comment lines. `gcode/` has the same parts
+already sliced (Anycubic Slicer Next 2.0.0.3), and `stl/` the bare meshes (orientation baked in;
+slice them as they are, for the Kobra X with its own machine profile). Parts, masses and times:
+`BOM.md`. Print `pivot_head`, `arm_hub` and `motor_clamp` first: they check the 25.8 mm and
+15.0 mm bores against your tubes.
+
+### Lessons from the first print
+
+<img src="photos/crank_seat_first_print.jpg" alt="Left: the v1 crank's bed-side bearing seat as printed, full of strands. Middle: the slicer's layer at 7.2 mm for v1, the 14 mm hole's walls laid over the empty seat. Right: the same layer for v1.1, one straight bore with nothing over air">
+
+One defect showed up: strands filled the crank's bed-side bearing seat. v1 had a 2 mm shoulder
+between the two 608 seats with a 14 mm hole in it. The crank prints flat, so that shoulder started
+over the empty bed-side seat, and the slicer laid the hole's walls on air. Since v1.1 the bore is
+straight through (the bearings press in flush with each face and still sit 2 mm apart, the
+spacer's length), the gate rejects any hole wider than 6 mm that rises through a ceiling, and the
+PETG process turns on the slicer's "Bridge counterbore holes". Details: `REPORT.md`, Round 3.
+
+**Printed the v1 crank?** No need to reprint it: cut the strands out of the bed-side seat (flush
+cutters, then a hobby knife round the shoulder) until a 608 presses in flush with the face, like
+the other one. A bearing left standing proud gets squeezed by the axle and drags. `cal_mast`'s two
+bolt holes over its nut slots may hold a few strands too: run a 4.5 mm drill or the bolt through.
 
 ## Assemble
 
@@ -166,7 +194,8 @@ means looking north.
 7. **Link.** Pin `crank_link` (option A) or `cell_link` (option B) in the fork (M3×20 + nyloc),
    snug but free to pivot.
 8. **Scale, option A (pocket scale and bell crank).** Measure the scale first (`BOM.md`: the anvil
-   assumes a 17 mm platform height). Press a 608ZZ into each face of `crank`. Hold the crank
+   assumes a 17 mm platform height). Press a 608ZZ into each face of `crank`, flush with the face
+   (press with a flat block wider than the hub and it stops there). Hold the crank
    between the cheeks of `crank_base`, its tab to the right (east), with `crank_spacer` between the
    bearings, and push the M8×45 through (washer, cheek, bearing, spacer, bearing, cheek, washer,
    nut). Tighten: the bosses clamp only the inner races, so the crank still turns freely. Screw the
@@ -299,3 +328,4 @@ Python 3.11 with `requirements.txt`. After any change to `build_thrust_stand.py`
 set `STAND_SLICER` if it is not in the default place), then refresh the renders with the viewer at
 `http://127.0.0.1:28766/viewer/?capture=1` (`?capture=stills` skips the animations).
 `v0_archive/` keeps the first draft (its STLs, renders, diagram, scripts and README) for reference.
+`photos/` has pictures from the first build.
