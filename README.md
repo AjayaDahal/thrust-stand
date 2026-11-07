@@ -122,6 +122,11 @@ swings 3.9° (the prop moves 33 mm) and stops, with a 10 in prop still 12 mm cle
 | Arm | 25.4 mm | 500 mm |
 | Axle | 14.66 mm | 80 mm |
 
+<img src="cut_guide.png" alt="Cut and drill guide: the post (728 mm), the arm (500 mm) and the axle (80 mm) laid out like rulers, with the printed parts and cross-bolts on each and their distances from the tube ends">
+
+Measure each tube from the end shown as 0. Drill the cross-holes later, through each printed part's own
+hole once it is in place; the guide's numbers are for checking.
+
 Measure your tubes before cutting. **Shorter tubes:** the post stands on the board and fills the
 pivot head's socket, so the pivot axle ends up 28 mm below the post's top. The motor shaft stays at
 220 mm (a 10 in prop needs ≥ 167 mm, a 7 in ≥ 130 mm), so the arm tube = post length − 228 mm
@@ -170,6 +175,8 @@ bolt holes over its nut slots may hold a few strands too: run a 4.5 mm drill or 
 
 The arm is the north–south axis: the prop is at the north end, the scale to the south. "Right"
 means looking north.
+
+<img src="board_layout.png" alt="Board layout from above: centreline, the arm axis 220 mm from the north edge, the post foot 70 mm east of it, the crank base 333 mm and the scale's platform centre 145 mm south of it, the corner stops, and where the load-cell mast, calibration mast and guy anchor go">
 
 1. **Board.** Draw the centreline along the board's length. Mark the arm's axis on it 220 mm from
    the north edge. The post foot goes 70 mm to the right of that point. Option A: the crank's axle
@@ -318,7 +325,7 @@ scripts/check_stand.py          the gate: 9 checks, exit code 1 on any failure
 scripts/slice_all.py            Anycubic Slicer Next CLI with the Kobra S1 profiles -> gcode/
 scripts/export_3mf.py           slicer projects with the same settings -> 3mf/ (each re-sliced as a check)
 scripts/make_viewer.py          viewer/manifest.json (parts, matrices, masses, bolts, v0 clashes)
-scripts/make_diagram.py         diagram.png
+scripts/make_diagram.py         diagram.png, cut_guide.png (tubes) and board_layout.png
 scripts/serve_viewer.py         the viewer at :28766; ?capture=1 re-renders renders/*.png and *.gif
 scripts/build_all.py            all of the above in order, stopping at the first failure
 ```
